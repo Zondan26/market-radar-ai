@@ -1,0 +1,31 @@
+name: GitHub AI Market Radar
+
+on:
+  schedule:
+    # Jalan otomatis tiap 15 menit (Senin-Jumat, jam 14.00 - 23.59 WIB)
+    - cron: '*/15 7-16 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  models: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Jalankan GitHub AI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scanner.py
+      - name: Simpan JSON ke Repo
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub AI Bot"
+          git add market_status.json
+          git commit -m "Update market_status.json" || exit 0
+          git push
