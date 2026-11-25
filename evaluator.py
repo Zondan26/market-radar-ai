@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from urllib import request
 
 HISTORY_FILE = "trade_history.csv"
+MEMORY_FILE = "error_memory.json"
 REPORT_FILE = "evaluasi_riset.json"
 SUMMARY_MD = "EVALUASI_TERBARU.md"
 COMMAND_FILE = "strategy_command.json"
@@ -40,6 +41,91 @@ def klasifikasi_hasil(profit_usd, exit_reason):
     return "RUGI_KECIL"
 
 
+def muat_memori_kesalahan():
+    default_mem = {
+        "total_evaluasi": 0,
+        "streak_rugi_evaluasi": 0,
+        "total_trade_terakhir": 0,
+        "net_pnl_terakhir": 0.0,
+        "pola_kesalahan": {
+            "rugi_saat_adx_kuat_ge_28": 0,
+            "rugi_saat_adx_lemah_lt_20": 0,
+            "rugi_tahan_lama_ge_10_menit": 0,
+            "rugi_skor_tinggi_ge_75": 0,
+        },
+        "catatan_pembelajaran": [
+            "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi."
+        ],
+    }
+    if not os.path.exists(MEMORY_FILE):
+        return default_mem
+    try:
+        with open(MEMORY_FILE, mode="r", encoding="utf-8") as f:
+            data = json.load(f)
+        for k, v in default_mem.items():
+            if k not in data:
+                data[k] = v
+        if "pola_kesalahan" not in data or not isinstance(data["pola_kesalahan"], dict):
+            data["pola_kesalahan"] = default_mem["pola_kesalahan"]
+        for pk, pv in default_mem["pola_kesalahan"].items():
+            if pk not in data["pola_kesalahan"]:
+                data["pola_kesalahan"][pk] = pv
+        return data
+    except Exception:
+        return default_mem
+
+
+def perbarui_memori_kesalahan(memori, stats, detail_catatan, waktu_wib_str):
+    pola = {
+        "rugi_saat_adx_kuat_ge_28": 0,
+        "rugi_saat_adx_lemah_lt_20": 0,
+        "rugi_tahan_lama_ge_10_menit": 0,
+        "rugi_skor_tinggi_ge_75": 0,
+    }
+
+    for item in detail_catatan:
+        if item["profit_usd"] < 0:
+            adx_val = parse_float(item.get("adx_m5", 0.0))
+            hold_min = parse_float(item.get("holding_minutes", 0.0))
+            skor_max = max(parse_int(item.get("score_m5", 0)), parse_int(item.get("score_m15", 0)))
+
+            if adx_val >= 28.0:
+                pola["rugi_saat_adx_kuat_ge_28"] += 1
+            elif adx_val < 20.0:
+                pola["rugi_saat_adx_lemah_lt_20"] += 1
+
+            if hold_min >= 10.0:
+                pola["rugi_tahan_lama_ge_10_menit"] += 1
+
+            if skor_max >= 75:
+                pola["rugi_skor_tinggi_ge_75"] += 1
+
+    memori["total_evaluasi"] = parse_int(memori.get("total_evaluasi", 0)) + 1
+    net_pnl = stats["net_profit_usd"]
+    prev_pnl = parse_float(memori.get("net_pnl_terakhir", 0.0))
+
+    if net_pnl < 0:
+        memori["streak_rugi_evaluasi"] = parse_int(memori.get("streak_rugi_evaluasi", 0)) + 1
+    else:
+        memori["streak_rugi_evaluasi"] = 0
+
+    pola_dominan = max(pola.items(), key=lambda x: x[1])
+    catatan_baru = (
+        f"[{waktu_wib_str}] Trade={stats['total_trade']}, Net=${net_pnl} "
+        f"(sebelumnya ${prev_pnl}), StreakRugi={memori['streak_rugi_evaluasi']}, "
+        f"PolaRugiTerbanyak={pola_dominan[0]} ({pola_dominan[1]}x)."
+    )
+
+    catatan_list = list(memori.get("catatan_pembelajaran", []))
+    catatan_list.append(catatan_baru)
+    memori["catatan_pembelajaran"] = catatan_list[-10:]
+    memori["pola_kesalahan"] = pola
+    memori["total_trade_terakhir"] = stats["total_trade"]
+    memori["net_pnl_terakhir"] = net_pnl
+    memori["terakhir_update_wib"] = waktu_wib_str
+    return memori
+
+
 def susun_blok_10_entry(detail_catatan):
     blok_list = []
     total = len(detail_catatan)
@@ -62,7 +148,7 @@ def susun_blok_10_entry(detail_catatan):
     return blok_list
 
 
-def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
+def susun_perintah_otomatis(stats, blok_10, memori, waktu_wib_str):
     cmd = {
         "updated_wib": waktu_wib_str,
         "mode_trading": "ACTIVE",
@@ -87,36 +173,48 @@ def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
         )
         return cmd
 
-    blok_terakhir = blok_10[-1]
     win_rate = stats["win_rate_pct"]
     rug_besar = stats["kategori"]["RUGI_BESAR"]
+    streak_rugi = parse_int(memori.get("streak_rugi_evaluasi", 0))
+    pola = memori.get("pola_kesalahan", {})
+    rugi_pola_berat = (
+        parse_int(pola.get("rugi_saat_adx_kuat_ge_28", 0))
+        + parse_int(pola.get("rugi_tahan_lama_ge_10_menit", 0))
+        + parse_int(pola.get("rugi_skor_tinggi_ge_75", 0))
+    )
 
-    if blok_terakhir["net_pnl_usd"] < 0 and blok_terakhir["loss"] >= 7:
+    blok_genap = [b for b in blok_10 if b["jumlah_entry"] == 10]
+    acuan_blok = blok_genap[-1] if blok_genap else blok_10[-1]
+
+    # Jika kerugian masih terakumulasi atau pola kesalahan berulang, tahan di CAUTIOUS bertahap
+    if stats["net_profit_usd"] < 0 or (acuan_blok["net_pnl_usd"] < 0 and acuan_blok["loss"] >= 6):
+        penalti_step = min(8, max(3, streak_rugi + (2 if rugi_pola_berat >= 4 else 0)))
         cmd["mode_trading"] = "CAUTIOUS"
-        cmd["min_probabilitas"] = 66
-        cmd["max_posisi"] = 50
-        cmd["jarak_tambah_atr"] = 0.35
+        cmd["min_probabilitas"] = 60 + penalti_step
+        cmd["max_posisi"] = 40 if rugi_besar >= 8 else 60
+        cmd["jarak_tambah_atr"] = 0.35 if rugi_pola_berat >= 3 else 0.30
         cmd["alasan_arahan"] = (
-            f"{blok_terakhir['blok']} merugi ({blok_terakhir['win']}W/{blok_terakhir['loss']}L, "
-            f"${blok_terakhir['net_pnl_usd']}): naikkan syarat peluang ke 66% dan perlebar jarak entri."
+            f"Belajar dari kesalahan ({acuan_blok['blok']}: ${acuan_blok['net_pnl_usd']}, Net=${stats['net_profit_usd']}, "
+            f"RugiBesar={rug_besar}): mode CAUTIOUS, min peluang {cmd['min_probabilitas']}%, "
+            f"max posisi {cmd['max_posisi']}, ATR {cmd['jarak_tambah_atr']}."
         )
-    elif win_rate >= 65.0 and rug_besar <= 2:
+    elif win_rate >= 65.0 and rug_besar <= 2 and stats["net_profit_usd"] > 0:
         cmd["mode_trading"] = "ACTIVE"
         cmd["min_probabilitas"] = 60
         cmd["max_posisi"] = DEFAULT_MAX_POSISI
         cmd["jarak_tambah_atr"] = 0.25
         cmd["alasan_arahan"] = (
-            f"{blok_terakhir['blok']} {blok_terakhir['hasil_blok']} (${blok_terakhir['net_pnl_usd']}) "
-            f"dengan win rate {win_rate}%: pertahankan mode aktif penuh (hingga {DEFAULT_MAX_POSISI} posisi)."
+            f"Performa membaik dan net profit positif (${stats['net_profit_usd']}, WR {win_rate}%): "
+            f"mode ACTIVE penuh (min peluang 60%, max {DEFAULT_MAX_POSISI} posisi)."
         )
     else:
         cmd["mode_trading"] = "ACTIVE"
         cmd["min_probabilitas"] = 63
-        cmd["max_posisi"] = 80
+        cmd["max_posisi"] = 75
         cmd["jarak_tambah_atr"] = 0.30
         cmd["alasan_arahan"] = (
-            f"Evaluasi per 10 entry ({blok_terakhir['blok']}: ${blok_terakhir['net_pnl_usd']}): "
-            "sesuaikan ambang peluang ke 63% dan jarak ATR 0.30 agar kualitas entri lebih terjaga."
+            f"Penyesuaian bertahap (Net=${stats['net_profit_usd']}, WR {win_rate}%): "
+            "min peluang 63%, max 75 posisi, dan jarak ATR 0.30."
         )
 
     return cmd
@@ -174,12 +272,12 @@ def panggil_gemini_evaluasi(ringkasan_data):
 
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
-        "Analisis riwayat trading berikut secara objektif dan ringkas dalam bahasa Indonesia:\n"
+        "Analisis riwayat trading serta memori kesalahan berikut secara objektif, bertahap, dan ringkas dalam bahasa Indonesia:\n"
         "1. Evaluasi tiap entry: kenapa muncul UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL, "
         "termasuk perbandingan rata-rata auto-cut profit terhadap rata-rata rugi SL.\n"
         "2. Evaluasi jeda waktu (holding time) sampai TP, SL, atau auto-cut saat chart/berita tidak stabil.\n"
-        "3. Evaluasi hasil tiap blok 10 kali entry (untung/rugi) serta skor M5/M15 & ADX saat entry.\n"
-        "4. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan berikutnya.\n\n"
+        "3. Evaluasi hasil tiap blok 10 kali entry serta pola kesalahan berulang di error_memory (apakah membaik atau masih terulang).\n"
+        "4. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan bertahap berikutnya.\n\n"
         f"DATA EVALUASI:\n{json.dumps(ringkasan_data, ensure_ascii=False, indent=2)}"
     )
 
@@ -318,14 +416,20 @@ def jalankan_evaluasi():
     wib_now = datetime.now(timezone.utc) + timedelta(hours=7)
     waktu_wib_str = wib_now.strftime("%Y-%m-%d %H:%M:%S WIB")
 
+    memori = muat_memori_kesalahan()
+    memori = perbarui_memori_kesalahan(memori, stats, detail_catatan, waktu_wib_str)
+    with open(MEMORY_FILE, mode="w", encoding="utf-8") as f:
+        json.dump(memori, f, ensure_ascii=False, indent=2)
+
     blok_10 = susun_blok_10_entry(detail_catatan)
-    perintah = susun_perintah_otomatis(stats, blok_10, waktu_wib_str)
+    perintah = susun_perintah_otomatis(stats, blok_10, memori, waktu_wib_str)
 
     with open(COMMAND_FILE, mode="w", encoding="utf-8") as f:
         json.dump(perintah, f, ensure_ascii=False, indent=2)
 
     hasil_gemini = panggil_gemini_evaluasi({
         "statistik": stats,
+        "memori_kesalahan": memori,
         "evaluasi_tiap_10_entry": blok_10[-10:],
         "perintah_terbit": perintah,
         "riwayat_tiap_entry": detail_catatan[-30:],
@@ -338,6 +442,7 @@ def jalankan_evaluasi():
             "keterangan": hasil_gemini["keterangan"],
         },
         "statistik": stats,
+        "memori_kesalahan": memori,
         "evaluasi_tiap_10_entry": blok_10,
         "perintah_aktif": perintah,
         "evaluasi_tiap_entry": detail_catatan,
@@ -347,6 +452,7 @@ def jalankan_evaluasi():
     with open(REPORT_FILE, mode="w", encoding="utf-8") as f:
         json.dump(laporan, f, ensure_ascii=False, indent=2)
 
+    pola_mem = memori.get("pola_kesalahan", {})
     lines = [
         "# Laporan Evaluasi Riset Scalping Otomatis",
         f"- **Diperbarui:** {waktu_wib_str}",
@@ -357,6 +463,10 @@ def jalankan_evaluasi():
         f"- **Mode:** `{perintah['mode_trading']}` | **Min Peluang:** `{perintah['min_probabilitas']}%` | **Max Posisi (Lot 0.01):** `{perintah['max_posisi']}`",
         f"- **Jarak Tambah ATR:** `{perintah['jarak_tambah_atr']}` | **Auto-Cut Goyah:** `{'AKTIF' if perintah['auto_cut_unstable'] else 'NONAKTIF'}`",
         f"- **Alasan Arahan:** {perintah['alasan_arahan']}",
+        "",
+        "## Memori & Pembelajaran Kesalahan (`error_memory.json`)",
+        f"- **Evaluasi Ke-:** {memori.get('total_evaluasi', 0)} | **Streak Evaluasi Rugi:** {memori.get('streak_rugi_evaluasi', 0)}",
+        f"- **Pola Rugi Terekam:** ADX Kuat (>=28): `{pola_mem.get('rugi_saat_adx_kuat_ge_28', 0)}` | ADX Lemah (<20): `{pola_mem.get('rugi_saat_adx_lemah_lt_20', 0)}` | Tahan >=10m: `{pola_mem.get('rugi_tahan_lama_ge_10_menit', 0)}` | Skor Tinggi (>=75): `{pola_mem.get('rugi_skor_tinggi_ge_75', 0)}`",
         "",
         "## Klasifikasi Tiap Entry",
         f"- Untung Besar: {stats['kategori']['UNTUNG_BESAR']}",
