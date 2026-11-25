@@ -1,53 +1,52 @@
 {
-  "updated_wib": "2026-11-25 18:44:12 WIB",
+  "updated_wib": "2026-11-25 21:47:01 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
-    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3-flash-preview) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
+    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 77,
-    "win_count": 46,
-    "loss_count": 31,
-    "win_rate_pct": 59.74,
-    "net_profit_usd": -59.51,
+    "total_trade": 109,
+    "win_count": 69,
+    "loss_count": 40,
+    "win_rate_pct": 63.3,
+    "net_profit_usd": -46.82,
     "kategori": {
-      "UNTUNG_BESAR": 20,
-      "UNTUNG_KECIL": 19,
-      "RUGI_KECIL": 6,
-      "RUGI_BESAR": 25,
-      "CUT_UNTUNG_TIDAK_STABIL": 7,
+      "UNTUNG_BESAR": 28,
+      "UNTUNG_KECIL": 25,
+      "RUGI_KECIL": 8,
+      "RUGI_BESAR": 32,
+      "CUT_UNTUNG_TIDAK_STABIL": 16,
       "CUT_RUGI_TIDAK_STABIL": 0
     },
     "rata_durasi_menit": {
-      "ke_tp": 38.23,
-      "ke_sl": 7.62,
-      "auto_cut_tanpa_tp_sl": 2.09
+      "ke_tp": 13.19,
+      "ke_sl": 7.99,
+      "auto_cut_tanpa_tp_sl": 2.82
     }
   },
   "kondisi_profit_dan_erosi": {
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_usd": 64.99,
-    "erosi_dari_puncak_pct": 1185.95,
+    "erosi_dari_puncak_usd": 52.3,
+    "erosi_dari_puncak_pct": 954.38,
     "rem_tangan_30pct_aktif": true
   },
   "memori_kesalahan": {
     "total_evaluasi": 1,
     "streak_rugi_evaluasi": 1,
-    "total_trade_terakhir": 77,
-    "net_pnl_terakhir": -59.51,
+    "total_trade_terakhir": 109,
+    "net_pnl_terakhir": -46.82,
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_pct": 1185.95,
+    "erosi_dari_puncak_pct": 954.38,
     "pola_kesalahan": {
-      "rugi_saat_adx_kuat_ge_30": 22,
-      "rugi_saat_adx_lemah_lt_20": 0,
-      "rugi_tahan_lama_ge_10_menit": 5,
-      "rugi_skor_tinggi_ge_75": 22
+      "rugi_tahan_lama_ge_10_menit": 7,
+      "rugi_skor_tinggi_ge_75": 31,
+      "rugi_cut_tidak_stabil": 0
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-25 18:44:12 WIB] Trade=77, Net=$-59.51 (Peak=$5.48, Erosi=1185.95%), StreakRugi=1, PolaRugiTerbanyak=rugi_saat_adx_kuat_ge_30 (22x)."
+      "[2026-11-25 21:47:01 WIB] Trade=109, Net=$-46.82 (Peak=$5.48, Erosi=954.38%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (31x)."
     ],
-    "terakhir_update_wib": "2026-11-25 18:44:12 WIB"
+    "terakhir_update_wib": "2026-11-25 21:47:01 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -114,25 +113,53 @@
       "hasil_blok": "RUGI"
     },
     {
-      "blok": "Entry #71 - #77",
-      "jumlah_entry": 7,
-      "win": 5,
-      "loss": 2,
-      "net_pnl_usd": 3.65,
-      "rata_durasi_menit": 6.84,
+      "blok": "Entry #71 - #80",
+      "jumlah_entry": 10,
+      "win": 7,
+      "loss": 3,
+      "net_pnl_usd": -0.41,
+      "rata_durasi_menit": 6.17,
+      "hasil_blok": "RUGI"
+    },
+    {
+      "blok": "Entry #81 - #90",
+      "jumlah_entry": 10,
+      "win": 6,
+      "loss": 4,
+      "net_pnl_usd": -17.79,
+      "rata_durasi_menit": 7.82,
+      "hasil_blok": "RUGI"
+    },
+    {
+      "blok": "Entry #91 - #100",
+      "jumlah_entry": 10,
+      "win": 6,
+      "loss": 4,
+      "net_pnl_usd": 3.74,
+      "rata_durasi_menit": 6.42,
+      "hasil_blok": "UNTUNG"
+    },
+    {
+      "blok": "Entry #101 - #109",
+      "jumlah_entry": 9,
+      "win": 9,
+      "loss": 0,
+      "net_pnl_usd": 30.8,
+      "rata_durasi_menit": 2.52,
       "hasil_blok": "UNTUNG"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 18:44:12 WIB",
+    "updated_wib": "2026-11-25 21:47:01 WIB",
     "mode_trading": "CAUTIOUS",
-    "alasan_arahan": "Rem tangan ADX>30 (maks 2 entry, target $0.3) aktif karena kerugian besar (Entry #61 - #70: $-26.55, Net=$-59.51, RugiBesar=25).",
+    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #91 - #100: $3.74, Net=$-46.82, RugiBesar=32): min peluang 63%, ATR 0.35.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
-    "max_adx_entry": 30.0,
-    "adx_over_limit_max_entry": 2,
-    "adx_over_limit_profit_usd": 0.3,
-    "max_posisi": 40,
+    "cut_profit_min_pct": 10.0,
+    "cut_profit_max_pct": 15.0,
+    "balance_drop_pause_pct": 10.0,
+    "pause_duration_seconds": 3600,
+    "max_posisi": 500,
     "jarak_tambah_atr": 0.35,
     "auto_cut_unstable": true,
     "min_untung_cut_usd": 0.1,
@@ -154,7 +181,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 27.29,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -169,7 +195,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 27.29,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -184,7 +209,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 27.76,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -199,7 +223,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 100,
       "score_m15": 60,
-      "adx_m5": 23.21,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -214,7 +237,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 19.93,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -229,7 +251,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 19.99,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -244,7 +265,6 @@
       "exit_reason": "CLOSED_OTHER",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.17,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -259,7 +279,6 @@
       "exit_reason": "CLOSED_OTHER",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.28,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -274,7 +293,6 @@
       "exit_reason": "CLOSED_OTHER",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.41,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -289,7 +307,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.44,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -304,7 +321,6 @@
       "exit_reason": "UNSTABLE_PROFIT_GRAB",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.47,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     },
     {
@@ -319,7 +335,6 @@
       "exit_reason": "TP_HIT",
       "score_m5": 35,
       "score_m15": 15,
-      "adx_m5": 22.13,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -334,7 +349,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 20,
       "score_m15": 20,
-      "adx_m5": 43.09,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -349,7 +363,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 20,
       "score_m15": 20,
-      "adx_m5": 38.51,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -364,7 +377,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 35,
       "score_m15": 20,
-      "adx_m5": 38.11,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -379,7 +391,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 20,
       "score_m15": 0,
-      "adx_m5": 33.9,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -394,7 +405,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 20,
       "score_m15": 0,
-      "adx_m5": 27.93,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -409,7 +419,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 50,
       "score_m15": 50,
-      "adx_m5": 39.3,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -424,7 +433,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 45,
       "score_m15": 20,
-      "adx_m5": 20.44,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -439,7 +447,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 100,
-      "adx_m5": 30.35,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -454,7 +461,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 100,
-      "adx_m5": 30.35,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -469,7 +475,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 29.39,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -484,7 +489,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 28.52,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -499,7 +503,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 29.69,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -514,7 +517,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 29.55,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -529,7 +531,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 29.55,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -544,7 +545,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 29.72,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -559,7 +559,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 29.72,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -574,7 +573,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 85,
-      "adx_m5": 29.3,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -589,7 +587,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 70,
-      "adx_m5": 29.72,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -604,7 +601,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 29.3,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -619,7 +615,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 29.3,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -634,7 +629,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 31.59,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -649,7 +643,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 31.59,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -664,7 +657,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 31.59,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -679,7 +671,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 85,
-      "adx_m5": 34.49,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -694,7 +685,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 34.82,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -709,7 +699,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 35.17,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -724,7 +713,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 34.74,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -739,7 +727,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 38.52,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -754,7 +741,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 38.54,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -769,7 +755,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 39.35,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -784,7 +769,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 39.35,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -799,7 +783,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 39.02,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -814,7 +797,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 47.32,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -829,7 +811,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 47.32,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -844,7 +825,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 47.0,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -859,7 +839,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.51,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -874,7 +853,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.4,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -889,7 +867,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.14,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -904,7 +881,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.55,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -919,7 +895,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.55,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -934,7 +909,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.56,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -949,7 +923,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.56,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -964,7 +937,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -979,7 +951,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -994,7 +965,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.58,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -1009,7 +979,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 51.58,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -1024,7 +993,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1039,7 +1007,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1054,7 +1021,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1069,7 +1035,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1084,7 +1049,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1099,7 +1063,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1114,7 +1077,6 @@
       "exit_reason": "SL_HIT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 58.48,
       "kategori": "RUGI_BESAR"
     },
     {
@@ -1129,7 +1091,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 52.91,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -1144,7 +1105,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 52.91,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -1159,7 +1119,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 53.28,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -1174,7 +1133,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 54.57,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -1189,7 +1147,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 43.83,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -1204,7 +1161,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 100,
       "score_m15": 85,
-      "adx_m5": 43.83,
       "kategori": "RUGI_KECIL"
     },
     {
@@ -1219,7 +1175,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 85,
       "score_m15": 85,
-      "adx_m5": 50.59,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -1234,7 +1189,6 @@
       "exit_reason": "BASKET_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 52.77,
       "kategori": "UNTUNG_BESAR"
     },
     {
@@ -1249,7 +1203,6 @@
       "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 21.2,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -1264,7 +1217,6 @@
       "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 21.2,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -1279,7 +1231,6 @@
       "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
       "score_m5": 70,
       "score_m15": 70,
-      "adx_m5": 21.2,
       "kategori": "UNTUNG_KECIL"
     },
     {
@@ -1294,9 +1245,456 @@
       "exit_reason": "SL_HIT",
       "score_m5": 70,
       "score_m15": 85,
-      "adx_m5": 21.2,
       "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 78,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.92,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 20,
+      "holding_minutes": 0.33,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 100,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 79,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.4,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 450,
+      "holding_minutes": 7.5,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 100,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 80,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -5.38,
+      "balance_impact_pct": -0.11,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 362,
+      "holding_minutes": 6.03,
+      "exit_reason": "SL_HIT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 81,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.93,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 340,
+      "holding_minutes": 5.67,
+      "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 85,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 82,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -5.35,
+      "balance_impact_pct": -0.1,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 1160,
+      "holding_minutes": 19.33,
+      "exit_reason": "SL_HIT",
+      "score_m5": 85,
+      "score_m15": 85,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 83,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -5.86,
+      "balance_impact_pct": -0.11,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 1143,
+      "holding_minutes": 19.05,
+      "exit_reason": "SL_HIT",
+      "score_m5": 70,
+      "score_m15": 85,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 84,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -4.72,
+      "balance_impact_pct": -0.09,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 426,
+      "holding_minutes": 7.1,
+      "exit_reason": "SL_HIT",
+      "score_m5": 70,
+      "score_m15": 85,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 85,
+      "symbol": "XAUUSD",
+      "direction": "BUY",
+      "profit_usd": -4.91,
+      "balance_impact_pct": -0.1,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 470,
+      "holding_minutes": 7.83,
+      "exit_reason": "SL_HIT",
+      "score_m5": 85,
+      "score_m15": 75,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 86,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.38,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 120,
+      "holding_minutes": 2.0,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 70,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 87,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.85,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 540,
+      "holding_minutes": 9.0,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 70,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 88,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.4,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 20,
+      "holding_minutes": 0.33,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 85,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 89,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.21,
+      "balance_impact_pct": 0.0,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 10,
+      "holding_minutes": 0.17,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 85,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 90,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.28,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 461,
+      "holding_minutes": 7.68,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 85,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 91,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.73,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 330,
+      "holding_minutes": 5.5,
+      "exit_reason": "UNSTABLE_PROFIT_GRAB",
+      "score_m5": 75,
+      "score_m15": 85,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 92,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -3.75,
+      "balance_impact_pct": -0.07,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 88,
+      "holding_minutes": 1.47,
+      "exit_reason": "SL_HIT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 93,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -3.74,
+      "balance_impact_pct": -0.07,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 275,
+      "holding_minutes": 4.58,
+      "exit_reason": "SL_HIT",
+      "score_m5": 85,
+      "score_m15": 80,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 94,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -0.48,
+      "balance_impact_pct": -0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 10,
+      "holding_minutes": 0.17,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "RUGI_KECIL"
+    },
+    {
+      "entry_ke": 95,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.91,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 130,
+      "holding_minutes": 2.17,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 96,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 2.23,
+      "balance_impact_pct": 0.04,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 960,
+      "holding_minutes": 16.0,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 80,
+      "score_m15": 80,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 97,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 3.54,
+      "balance_impact_pct": 0.07,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 1681,
+      "holding_minutes": 28.02,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 65,
+      "score_m15": 80,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 98,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -0.52,
+      "balance_impact_pct": -0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 50,
+      "holding_minutes": 0.83,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "RUGI_KECIL"
+    },
+    {
+      "entry_ke": 99,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 1.07,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 140,
+      "holding_minutes": 2.33,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 100,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 3.75,
+      "balance_impact_pct": 0.07,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 190,
+      "holding_minutes": 3.17,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 101,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 2.49,
+      "balance_impact_pct": 0.05,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 300,
+      "holding_minutes": 5.0,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 102,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 4.63,
+      "balance_impact_pct": 0.09,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 215,
+      "holding_minutes": 3.58,
+      "exit_reason": "TP_HIT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 103,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 4.62,
+      "balance_impact_pct": 0.09,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 211,
+      "holding_minutes": 3.52,
+      "exit_reason": "TP_HIT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 104,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 1.07,
+      "balance_impact_pct": 0.02,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 60,
+      "holding_minutes": 1.0,
+      "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 85,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 105,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 0.33,
+      "balance_impact_pct": 0.01,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 30,
+      "holding_minutes": 0.5,
+      "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 85,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 106,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 4.93,
+      "balance_impact_pct": 0.1,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 445,
+      "holding_minutes": 7.42,
+      "exit_reason": "TP_HIT",
+      "score_m5": 85,
+      "score_m15": 100,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 107,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 1.44,
+      "balance_impact_pct": 0.03,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 10,
+      "holding_minutes": 0.17,
+      "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
+      "score_m5": 70,
+      "score_m15": 85,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 108,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 5.28,
+      "balance_impact_pct": 0.1,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 40,
+      "holding_minutes": 0.67,
+      "exit_reason": "ADX_HIGH_30PCT_PROFIT_CUT",
+      "score_m5": 70,
+      "score_m15": 85,
+      "kategori": "UNTUNG_BESAR"
+    },
+    {
+      "entry_ke": 109,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 6.01,
+      "balance_impact_pct": 0.12,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 50,
+      "holding_minutes": 0.83,
+      "exit_reason": "PROFIT_CUT_10_15_PCT",
+      "score_m5": 80,
+      "score_m15": 80,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     }
   ],
-  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis Anda:\n\n### 1. Evaluasi Profit vs Rugi\n*   **Performa Netral-Negatif:** Meskipun *win rate* mencapai **59.74%**, hasil akhir adalah **Net Loss -$59.51**. Ini menunjukkan anomali *Risk-to-Reward Ratio* yang sangat buruk.\n*   **Erosi Profit:** Puncak profit hanya menyentuh **$5.48**, namun terjadi erosi sebesar **1185.95%** ($64.99) hingga saldo menjadi negatif. Sistem mengalami *bleeding* hebat setelah mencapai titik tertinggi yang kecil.\n*   **Auto-cut vs SL:** Strategi ini terjebak dalam pola \"menabung receh, rugi sekarung\". *Auto-cut* (Basket/ADX Cut) menghasilkan untung kecil ($0.7 - $3), namun dihantam oleh **25 Rugi Besar** (rata-rata -$6 per trade) yang mayoritas berasal dari **SL_HIT**.\n\n### 2. Evaluasi Durasi Tahan\n*   **Ketimpangan Durasi:** Rata-rata durasi ke **TP (38.23 menit)** jauh lebih lama dibandingkan durasi ke **SL (7.62 menit)**. \n*   **Indikasi:** Market bergerak melawan posisi Anda 5x lebih cepat daripada bergerak menuju target. \n*   **Auto-cut:** Durasi *auto-cut* sangat singkat (**2.09 menit**). Hal ini menunjukkan fitur \"Rem Tangan\" bekerja sangat agresif memotong posisi, namun seringkali terlambat karena SL sudah tersentuh lebih dulu dalam volatilitas tinggi.\n\n### 3. Evaluasi Blok & Error Memory\n*   **Analisis Blok:** Performa sangat tidak stabil. Keuntungan di Blok #31-#50 (+$34.6) langsung musnah oleh kerugian masif di Blok #61-#70 (-$26.55) dan Blok #11-#20 (-$33.89).\n*   **Pola Kesalahan (Error Memory):**\n    *   **ADX Kuat (>=30):** Menjadi penyebab utama dengan **22 kegagalan**. Sistem mencoba melakukan scalping/reversal saat tren sedang sangat kuat, sehingga tersapu arus.\n    *   **Skor Tinggi (>=75):** Uniknya, 22 kerugian terjadi saat skor indikator sangat tinggi. Ini menandakan adanya *false signal* pada kondisi *overbought/oversold* di M5/M15 yang tidak selaras dengan tren besar.\n\n### 4. Saran Penyetelan Parameter Konkret\n1.  **Perketat Filter ADX:** Ubah `max_adx_entry` dari 30.0 menjadi **25.0**. Data menunjukkan kerugian berulang terjadi saat ADX > 30. Hindari entry saat volatilitas tren sedang di puncak.\n2.  **Optimasi SL & TP:** Jarak SL saat ini terlalu lebar atau mudah tersentuh dalam waktu singkat (7 menit). Perkecil nilai SL atau gunakan **Trailing Stop berbasis ATR** yang lebih dinamis agar kerugian per trade tidak mencapai -$6 (targetkan maks -$2 s/d -$3 untuk lot 0.01).\n3.  **Sinkronisasi M15:** Aktifkan `wajib_kompak_m15: true` secara permanen dan naikkan `min_probabilitas` menjadi **70%**. Jangan izinkan entry jika M15 tidak memberikan konfirmasi arah yang sama dengan M5 untuk menghindari *noise* scalping."
+  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis secara singkat, padat, dan tuntas:\n\n### 1. Evaluasi Profit vs Rugi\n* **Kinerja Keseluruhan:** Meskipun *win rate* tergolong baik di angka **63.3%** (69 win / 40 loss), total net PnL masih bernilai negatif **-$46.82**. \n* **Puncak Profit & Erosi:** *Peak profit* tercatat sangat rendah di **$5.48**, namun mengalami erosi masif sebesar **954.38%** (-$52.3) akibat besarnya nominal *loss* per posisi.\n* **Auto-Cut vs SL:** Mekanisme *auto-cut* efektif mengamankan profit kecil secara cepat, namun tidak sebanding dengan kerugian dari *Stop Loss* (SL Hit) dan kategori `RUGI_BESAR` (tercatat 32 kejadian) yang menggerus akumulasi kemenangan.\n\n### 2. Evaluasi Durasi Tahan (Holding Time)\n* **Ke TP (Rata-rata 13.19 menit):** Durasi menuju *Take Profit* relatif ideal untuk menangkap momentum tren pendek di M5+M15.\n* **Ke SL (Rata-rata 7.99 menit):** Waktu tahan saat salah arah cukup cepat, namun ukuran risiko (*lot/distance*) tampaknya terlalu berat terhadap margin profit.\n* **Auto-Cut Tanpa TP/SL (Rata-rata 2.82 menit):** Sangat efisien dan responsif dalam memotong posisi yang tidak stabil atau menghindari pembalikan arah mendadak.\n\n### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (`error_memory`)\n* **Performa Blok:** Terjadi performa yang tidak konsisten. Blok awal hingga tengah (`#11` s.d. `#90`) didominasi hasil **RUGI** akibat tekanan *drawdown* yang dalam. Namun, sistem menunjukkan pemulihan signifikan pada blok akhir (`#91` s.d. `#109`), khususnya pada blok `#101 - #109` yang sukses mencetak *win rate* 100% ($+$30.8 USD).\n* **Pola Kesalahan:** *Error memory* mendeteksi masalah utama pada kategori `rugi_skor_tinggi_ge_75` (terjadi 31 kali). Artinya, sistem sering masuk posisi dengan keyakinan skor tinggi (>75) namun tetap terkena SL, mengindikasikan adanya *false signal* saat volatilitas tinggi di XAUUSD.\n\n### 4. Saran Penyetelan Parameter Konkret\n1. **Perketat Filter Skor & Konfirmasi M15:** Naikkan batas minimum probabilitas/skor dari 63 menjadi minimal **70-75**, serta pastikan `wajib_kompak_m15` benar-benar memfilter arah tren secara ketat untuk meredam kasus `rugi_skor_tinggi_ge_75`.\n2. **Optimalisasi Risk-to-Reward Ratio (RRR):** Sesuaikan jarak SL atau percepat *trailing stop* karena saat ini 1 kali *loss* besar mampu memakan hasil 4-5 kali *win* kecil.\n3. **Pertahankan Mode Cautious & Jeda Saldo:** Pertahankan aturan *pause* otomatis saat saldo turun $\\ge 10\\%$ untuk memutus *losing streak* psikologis dan teknis seperti yang terbukti sukses membalikkan performa di blok akhir."
 }
