@@ -1,14 +1,15 @@
 {
-  "updated_wib": "2026-11-25 12:11:27 WIB",
-  "mode_trading": "ACTIVE",
-  "alasan_arahan": "Sampel baru 0 entry (belum genap 1 blok 10 entry): pertahankan batas peluang 60%, maksimal 100 posisi (lot 0.01), dan auto-cut saat chart/berita tidak stabil.",
-  "min_probabilitas": 60,
+  "updated_wib": "2026-11-25 12:17:55 WIB",
+  "mode_trading": "CAUTIOUS",
+  "alasan_arahan": "Entry #11 - #19 merugi (2W/7L, $-29.45): naikkan syarat peluang ke 66% dan perlebar jarak entri.",
+  "min_probabilitas": 66,
   "wajib_kompak_m15": true,
-  "max_posisi": 100,
-  "jarak_tambah_atr": 0.25,
+  "max_posisi": 50,
+  "jarak_tambah_atr": 0.35,
   "auto_cut_unstable": true,
   "min_untung_cut_usd": 0.1,
   "smart_early_tp": true,
   "min_rasio_early_tp": 0.5,
-  "max_sl_harian": 10
+  "max_sl_harian": 1000,
+  "max_rugi_saldo_persen": 60.0
 }
