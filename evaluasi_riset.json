@@ -1,18 +1,18 @@
 {
-  "updated_wib": "2026-11-25 12:34:01 WIB",
+  "updated_wib": "2026-11-25 12:36:55 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
-    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
+    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3-flash-preview) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 30,
-    "win_count": 15,
+    "total_trade": 32,
+    "win_count": 17,
     "loss_count": 15,
-    "win_rate_pct": 50.0,
-    "net_profit_usd": -56.2,
+    "win_rate_pct": 53.12,
+    "net_profit_usd": -51.2,
     "kategori": {
-      "UNTUNG_BESAR": 3,
-      "UNTUNG_KECIL": 5,
+      "UNTUNG_BESAR": 4,
+      "UNTUNG_KECIL": 6,
       "RUGI_KECIL": 0,
       "RUGI_BESAR": 15,
       "CUT_UNTUNG_TIDAK_STABIL": 7,
@@ -21,7 +21,7 @@
     "rata_durasi_menit": {
       "ke_tp": 38.23,
       "ke_sl": 10.65,
-      "auto_cut_tanpa_tp_sl": 0.5
+      "auto_cut_tanpa_tp_sl": 0.77
     }
   },
   "evaluasi_tiap_10_entry": [
@@ -51,12 +51,21 @@
       "net_pnl_usd": -19.63,
       "rata_durasi_menit": 1.2,
       "hasil_blok": "RUGI"
+    },
+    {
+      "blok": "Entry #31 - #32",
+      "jumlah_entry": 2,
+      "win": 2,
+      "loss": 0,
+      "net_pnl_usd": 5.0,
+      "rata_durasi_menit": 2.67,
+      "hasil_blok": "UNTUNG"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 12:34:01 WIB",
+    "updated_wib": "2026-11-25 12:36:55 WIB",
     "mode_trading": "ACTIVE",
-    "alasan_arahan": "Evaluasi per 10 entry (Entry #21 - #30: $-19.63): sesuaikan ambang peluang ke 63% dan jarak ATR 0.30 agar kualitas entri lebih terjaga.",
+    "alasan_arahan": "Evaluasi per 10 entry (Entry #31 - #32: $5.0): sesuaikan ambang peluang ke 63% dan jarak ATR 0.30 agar kualitas entri lebih terjaga.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
     "max_posisi": 80,
@@ -518,7 +527,37 @@
       "score_m15": 70,
       "adx_m5": 29.72,
       "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 31,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 1.49,
+      "balance_impact_pct": 0.03,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 140,
+      "holding_minutes": 2.33,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 85,
+      "score_m15": 85,
+      "adx_m5": 29.3,
+      "kategori": "UNTUNG_KECIL"
+    },
+    {
+      "entry_ke": 32,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 3.51,
+      "balance_impact_pct": 0.07,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 181,
+      "holding_minutes": 3.02,
+      "exit_reason": "BASKET_PROFIT_CUT",
+      "score_m5": 100,
+      "score_m15": 85,
+      "adx_m5": 29.3,
+      "kategori": "UNTUNG_BESAR"
     }
   ],
-  "ai_analisis": "Berikut adalah analisis objektif dan ringkas berdasarkan riwayat evaluasi riset scalping otomatis XAUUSD & EURUSD:\n\n### 1. Evaluasi Tiap Entry (Profit vs Loss)\n*   **Penyebab Untung (Besar/Kecil):** Keuntungan mayoritas diperoleh melalui *profit taking* cepat (`UNSTABLE_PROFIT_GRAB` atau `BASKET_PROFIT_CUT`) dalam durasi sangat singkat saat harga berfluktuasi searah, serta beberapa entry sukses menyentuh TP (`TP_HIT` rata-rata di 38.23 menit).\n*   **Penyebab Rugi (Besar):** 100% kerugian dikategorikan sebagai **Rugi Besar** (`SL_HIT`). Tidak ada rugi kecil karena sistem langsung memotong posisi pada batas Stop Loss (SL) statis yang relatif lebar dibanding target *auto-cut* profit.\n*   **Perbandingan Auto-Cut Profit vs SL:** \n    *   Rata-rata profit dari *auto-cut* (misal: *unstable profit grab* / *basket profit*) sangat kecil (berkisar antara $0.20 – $3.50).\n    *   Sebaliknya, rata-rata kerugian saat terkena SL sangat konsisten dan besar (berkisar di angka **-$4.30 hingga -$7.23**). Rasio risk-to-reward sangat timpang, di mana satu kali kena SL dapat menghapus hasil dari 3-5 kali entry profit kecil.\n\n### 2. Evaluasi Jeda Waktu (Holding Time)\n*   **Ke TP:** Rata-rata **38.23 menit**. Waktu tahan yang cukup lama untuk ukuran scalping, menunjukkan rentang target profit yang agak jauh dari titik entry.\n*   **Ke SL:** Rata-rata **10.65 menit**. Cukup cepat terseret ke area negatif, menandakan momentum sering berbalik arah melawan posisi (terutama dominasi posisi SELL saat market XAUUSD melakukan koreksi naik/spike).\n*   **Kondisi Tidak Stabil:** Fitur `auto_cut_unstable` bekerja sangat agresif dengan rata-rata durasi hanya **0.5 menit** (30 detik). Ini efektif mengamankan modal dari whipsaw pasar, namun membatasi potensi profit besar.\n\n### 3. Evaluasi Per Blok 10 Entry & Skor Indikator\n*   **Blok 1 #1 - #10 (Win: 9, Loss: 1 | Net: -$2.68 | Durasi: 1.83m):** \n    *   Win rate sangat tinggi karena didominasi *auto-cut* cepat. Namun secara finansial tetap rugi tipis akibat besarnya dampak 1 kali SL.\n    *   *Skor & ADX:* Skor M5/M15 rendah (M5: ~45, M15: ~20) dengan ADX di kisaran 20-27 (pasar *ranging* / lemah).\n*   **Blok 2 #11 - #20 (Win: 2, Loss: 8 | Net: -$33.89 | Durasi: 17.46m):** \n    *   Blok terburuk dengan *drawdown* terbesar. Sistem terjebak menahan posisi SELL terlalu lama saat tren naik melawan arah (banyak SL tersentuh di atas 10-28 menit).\n    *   *Skor & ADX:* ADX meningkat (>30 - 43), menandakan pasar mulai masuk fase *trending* kuat yang menembus batas SL.\n*   **Blok 3 #21 - #30 (Win: 4, Loss: 6 | Net: -$19.63 | Durasi: 1.20m):** \n    *   Mulai membaik dari sisi durasi (kembali ke scalping kilat 1.2 menit), namun rasio kekalahan masih mendominasi sehingga net PnL tetap negatif.\n    *   *Skor & ADX:* Skor M5/M15 tinggi (85-100) dan ADX stabil di ~29. Tingginya skor belum menjamin akurasi karena arah tren masih mudah berbalik.\n\n---\n\n### 4. Saran Penyetelan Parameter Konkret\n1.  **Perketat Filter Tren (ADX & Score M15):** \n    Naikkan ambang batas minimal ADX ke atas **30.0** dan wajibkan keselarasan *score* M15 yang lebih ketat (>75) sebelum entry. Hindari membuka posisi SELL beruntun saat skor M15 menunjukkan kekuatan *bullish* yang dominan.\n2.  **Optimalkan Risk-to-Reward Ratio (Terapkan Trailing SL / Tightening SL):** \n    Karena rata-rata kerugian SL jauh lebih besar daripada profit *auto-cut*, percepat pengaktifan *Trailing Stop* atau perkecil jarak SL awal agar kerugian per transaksi bisa ditekan di bawah -$3.00.\n3.  **Evaluasi Ulang Jeda Waktu *Auto-Cut* & *Basket Profit*:** \n    Pertahankan fitur `auto_cut_unstable` di bawah 1 menit karena terbukti menyelamatkan modal dari volatilitas ekstrem XAUUSD, namun naikkan batas minimum `min_untung_cut_usd` secara bertahap (misal ke $0.50)"
+  "ai_analisis": "Berikut adalah analisis evaluasi riset trading scalping otomatis Anda:\n\n### 1. Evaluasi Tiap Entry (Profit vs Loss)\n*   **Ketimpangan Risk/Reward:** Meskipun *Win Rate* mencapai 53.12%, hasil akhir tetap minus (-$51.2). Ini disebabkan oleh kategori **RUGI_BESAR (15 kali)** yang tidak sebanding dengan **UNTUNG_BESAR (4 kali)**.\n*   **Penyebab Untung Kecil:** Fitur `UNSTABLE_PROFIT_GRAB` dan `BASKET_PROFIT_CUT` terlalu agresif mengambil untung di angka $0.2 - $0.5.\n*   **Penyebab Rugi Besar:** Rata-rata rugi per SL berkisar -$4.3 hingga -$7.2. Perbandingannya sangat buruk: Anda membutuhkan sekitar **10-15 kali *auto-cut profit*** hanya untuk menutupi **1 kali *SL hit***. Sistem saat ini \"menjemput receh tapi menyetor dolar\".\n\n### 2. Evaluasi Jeda Waktu (Holding Time)\n*   **Efisiensi TP vs SL:** Rata-rata waktu ke TP (38 menit) jauh lebih lama dibandingkan waktu ke SL (10 menit). Ini mengindikasikan bahwa saat market berlawanan, harga bergerak sangat cepat menghantam SL, sementara saat searah, harga bergerak lambat atau ragu-ragu.\n*   **Auto-Cut Unstable:** Durasi *auto-cut* sangat singkat (rata-rata 0.77 menit). Fitur ini menyelamatkan posisi dari pembalikan harga, namun jika terlalu sensitif, ia mematikan potensi *running profit* yang seharusnya bisa mencapai TP utama.\n\n### 3. Evaluasi Blok 10 Entry & Skor (M5/M15/ADX)\n*   **Blok #1 - #10 (Net -$2.68):** Skor rendah (M5:45, M15:20) dengan ADX rendah (~20). Banyak *win* tapi nominal sangat kecil, sehingga 1 kali kalah langsung menghapus semua keuntungan.\n*   **Blok #11 - #20 (Net -$33.89):** **Blok terburuk.** Terjadi saat skor teknikal sangat rendah (M5:20, M15:0) dan ADX tinggi (30-40). Sistem memaksakan *Sell* saat market sedang *trending* kuat ke atas (melawan arus).\n*   **Blok #21 - #30 (Net -$19.63):** Meskipun skor kompak tinggi (85/85), hasil tetap rugi. Ini menunjukkan bahwa pada volatilitas XAUUSD yang tinggi, skor teknikal saja tidak cukup jika jarak SL terlalu rapat atau entri dilakukan di ujung tren.\n*   **Blok #31 - #32 (Net +$5.0):** Menunjukkan perbaikan kualitas setelah parameter `min_probabilitas` dinaikkan ke 63%.\n\n### 4. Saran Penyetelan Parameter Konkret\nUntuk memperbaiki performa pada tahap berikutnya, lakukan penyesuaian berikut:\n\n1.  **Naikkan Ambang Batas Profit Cut:** Ubah `min_untung_cut_usd` dari **0.1** menjadi **1.5 - 2.0**. Ini bertujuan agar *auto-cut* tidak mematikan posisi terlalu dini sebelum biaya *spread* dan komisi tertutupi dengan layak secara rasio.\n2.  **Filter ADX untuk Entry:** Tambahkan parameter untuk **melarang entry jika ADX M5 > 35** kecuali skor M5/M15 adalah 100. Hal ini untuk mencegah sistem melakukan *counter-trend* (melawan arus) saat momentum market sedang sangat kuat.\n3.  **Perlebar Jarak ATR:** Pertahankan `jarak_tambah_atr` di **0.30 - 0.45** untuk memberikan \"ruang bernapas\" pada XAUUSD agar tidak mudah terkena *noise* harga yang memicu SL prematur.\n4.  **Seleksi Skor Ketat:** Tetapkan `min_probabilitas` minimal **70%** dan pastikan `wajib_kompak_m15` tetap **TRUE**. Data menunjukkan skor di bawah 50% hampir selalu berakhir dengan `SL_HIT`."
 }
