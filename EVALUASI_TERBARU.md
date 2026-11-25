@@ -1,5 +1,5 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-25 11:52:23 WIB
+- **Diperbarui:** 2026-11-25 12:11:27 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
 - **Total Entry:** 0 | **Win Rate:** 0.0% | **Net P/L:** $0.0
 
@@ -25,22 +25,26 @@
 - Belum ada data entry.
 
 ## Analisis Evaluasi AI
-Berdasarkan data evaluasi riset scalping otomatis (XAUUSD & EURUSD, lot 0.01, M5+M15) per **25 November 2026**, berikut adalah analisis objektif dan ringkas:
+Sebagai analis evaluasi riset scalping otomatis, berikut adalah laporan objektif dan ringkas berdasarkan data riwayat trading yang tersedia (XAUUSD & EURUSD, lot 0.01, M5+M15):
 
-### 1. Evaluasi Tiap Entry
-*   **Status Data:** Total *trade* saat ini masih **0 (nol)**. 
-*   **Proyeksi Analisis:** Karena belum ada data historis *entry*, kategori UNTUNG BESAR/KECIL dan RUGI BESAR/KECIL belum dapat dikalkulasikan. Secara sistem, algoritma saat ini berada dalam posisi *waiting* (menunggu setup valid dengan probabilitas minimum 60% dan konfirmasi M15).
+### 1. Evaluasi Tiap Entry (Untung/Rugi)
+* **Status:** Belum ada data entry yang terekam (`total_trade: 0`). 
+* **Analisis:** Sistem belum mengeksekusi posisi sama sekali. Oleh karena itu, belum ada sampel empiris untuk mengkategorikan *Untung Besar/Kecil* atau *Rugi Besar/Kecil*. Filter probabilitas minimum 60% dan konfirmasi M15 (`wajib_kompak_m15: true`) bekerja sangat ketat atau kondisi pasar saat pemantauan belum memenuhi kriteria matematis robot.
 
 ### 2. Evaluasi Jeda Waktu (Holding Time)
-*   **Status Data:** Rata-rata durasi (ke TP, SL, maupun *auto-cut*) tercatat **0.0 menit**.
-*   **Proyeksi Analisis:** Parameter *auto-cut* tidak stabil (`auto_cut_unstable: true`) dengan target profit minimal `$0.1` (`min_untung_cut_usd`) dan *smart early TP* (rasio 0.5) sudah terkonfigurasi dengan baik secara teoretis untuk mengamankan posisi cepat pada timeframe M5/M15, namun belum diuji di pasar.
+* **Status:** Nihil (Durasi TP/SL/Auto-cut tercatat 0 menit).
+* **Analisis:** Karena tidak ada posisi yang dibuka, durasi *holding time* tidak dapat dievaluasi. Namun, parameter durasi rata-rata harus tetap dipantau pada siklus berikutnya agar scalping M5 tidak terjebak menjadi *swing trading* akibat volatilitas berita.
 
 ### 3. Evaluasi Blok 10 Entry & Risiko Penumpukan
-*   **Status Data:** Belum ada blok 10 entry yang terbentuk (0 dari target minimal 1 blok).
-*   **Risiko Penumpukan (Clustering Risk):** Sistem memiliki batas `max_posisi: 100` dengan jarak `0.25 ATR`. Untuk instrumen volatile seperti XAUUSD (Gold), pembukaan posisi yang terlalu rapat dengan batas maksimal 100 posisi berisiko memicu *margin drawdown* masif jika terjadi *pilling-up* (penumpukan lot) saat tren berbalik arah secara tajam tanpa tersaring filter M15.
+* **Status:** Blok 10 entry belum terbentuk.
+* **Analisis:** Risiko penumpukan posisi (*grid/averaging*) dengan jarak ATR 0.25 dan batas maksimal 100 posisi belum diuji di lapangan. Mengingat batas maksimal posisi cukup tinggi (100 posisi lot 0.01), potensi *drawdown* akibat penumpukan saat *trending* kuat (terutama di XAUUSD) tetap menjadi ancaman utama jika filter tren gagal membendung.
 
 ### 4. Saran Penyetelan Parameter Konkret
-Mengingat sistem baru akan memulai siklus trading, berikut 3 saran penyetelan untuk memitigasi risiko:
-1.  **Perketat Filter Tren (M15):** Pastikan parameter `wajib_kompak_m15` tetap aktif dan pertimbangkan menaikkan `min_probabilitas` dari **60% menjadi 65%** khusus untuk XAUUSD guna menghindari *false breakout* di timeframe kecil (M5).
-2.  **Batasi Penumpukan Posisi (Max Posisi):** Turunkan `max_posisi` sementara dari **100 posisi ke kisaran 20–30 posisi** untuk tahap uji coba awal. 100 posisi (meskipun lot 0.01) terlalu berisiko untuk strategi *scalping* otomatis murni sebelum stabilitas profitabilitas terbukti.
-3.  **Optimalisasi Jarak ATR:** Pertimbangkan untuk memperlebar `jarak_tambah_atr` dari **0.25 menjadi 0.35 atau 0.4** pada XAUUSD guna menghindari penambahan posisi (*averaging/grid*) yang terlalu berdekatan saat volatilitas intraday meningkat.
+Mengingat sistem baru berada pada tahap inisialisasi tanpa data *trade*, berikut 3 saran penyetelan untuk mengoptimalkan fase uji coba berikutnya:
+
+1. **Uji Coba Sensitivitas Filter (Menurunkan Ambang Batas Sementara):** 
+   Jika dalam 1x24 jam sistem tidak kunjung membuka posisi, turunkan sementara `min_probabilitas` dari 60% ke 55% untuk memancing sampel data awal, namun tetap pertahankan `wajib_kompak_m15: true` untuk menjaga kualitas tren.
+2. **Batasi Eksposur Maksimal Posisi:** 
+   Kurangi `max_posisi` dari 100 menjadi 20–30 posisi saja untuk pair XAUUSD guna mencegah risiko akumulasi *margin call* dini akibat jarak penambahan ATR yang terlalu rapat (0.25).
+3. **Optimalkan Auto-Cut & Early TP:** 
+   Pertahankan `smart_early_tp` dengan `min_rasio_early_tp: 0.5` dan `min_untung_cut_usd: 0.1` agar robot secara agresif mengunci keuntungan kecil di tengah volatilitas M5 yang cepat berbalik arah.
