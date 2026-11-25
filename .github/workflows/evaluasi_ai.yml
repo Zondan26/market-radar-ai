@@ -28,12 +28,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python evaluator.py
 
-      - name: Commit hasil evaluasi ke GitHub
+      - name: Commit hasil evaluasi & perintah ke GitHub
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add evaluasi_riset.json EVALUASI_TERBARU.md
+          git add evaluasi_riset.json EVALUASI_TERBARU.md strategy_command.json
           if ! git diff --staged --quiet; then
-            git commit -m "Update laporan evaluasi riset AI"
+            git commit -m "Update laporan evaluasi & strategy_command.json"
             git push
           fi
