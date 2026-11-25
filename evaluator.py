@@ -15,7 +15,7 @@ BIG_LOSS_USD = -2.00
 DEFAULT_MAX_POSISI = 100
 PROFIT_EROSION_TRIGGER_PCT = 30.0
 MIN_PEAK_PROFIT_FOR_30PCT = 5.00
-ADX_REM_TANGAN = 28.0
+ADX_REM_TANGAN = 30.0
 ADX_NORMAL_LONGGAR = 35.0
 
 
@@ -81,7 +81,7 @@ def muat_memori_kesalahan():
         "peak_profit_usd": 0.0,
         "erosi_dari_puncak_pct": 0.0,
         "pola_kesalahan": {
-            "rugi_saat_adx_kuat_ge_28": 0,
+            "rugi_saat_adx_kuat_ge_30": 0,
             "rugi_saat_adx_lemah_lt_20": 0,
             "rugi_tahan_lama_ge_10_menit": 0,
             "rugi_skor_tinggi_ge_75": 0,
@@ -110,7 +110,7 @@ def muat_memori_kesalahan():
 
 def perbarui_memori_kesalahan(memori, stats, detail_catatan, info_erosi, waktu_wib_str):
     pola = {
-        "rugi_saat_adx_kuat_ge_28": 0,
+        "rugi_saat_adx_kuat_ge_30": 0,
         "rugi_saat_adx_lemah_lt_20": 0,
         "rugi_tahan_lama_ge_10_menit": 0,
         "rugi_skor_tinggi_ge_75": 0,
@@ -122,8 +122,8 @@ def perbarui_memori_kesalahan(memori, stats, detail_catatan, info_erosi, waktu_w
             hold_min = parse_float(item.get("holding_minutes", 0.0))
             skor_max = max(parse_int(item.get("score_m5", 0)), parse_int(item.get("score_m15", 0)))
 
-            if adx_val >= 28.0:
-                pola["rugi_saat_adx_kuat_ge_28"] += 1
+            if adx_val >= ADX_REM_TANGAN:
+                pola["rugi_saat_adx_kuat_ge_30"] += 1
             elif adx_val < 20.0:
                 pola["rugi_saat_adx_lemah_lt_20"] += 1
 
@@ -135,7 +135,6 @@ def perbarui_memori_kesalahan(memori, stats, detail_catatan, info_erosi, waktu_w
 
     memori["total_evaluasi"] = parse_int(memori.get("total_evaluasi", 0)) + 1
     net_pnl = stats["net_profit_usd"]
-    prev_pnl = parse_float(memori.get("net_pnl_terakhir", 0.0))
 
     if net_pnl < 0:
         memori["streak_rugi_evaluasi"] = parse_int(memori.get("streak_rugi_evaluasi", 0)) + 1
@@ -215,7 +214,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
     streak_rugi = parse_int(memori.get("streak_rugi_evaluasi", 0))
     pola = memori.get("pola_kesalahan", {})
     rugi_pola_berat = (
-        parse_int(pola.get("rugi_saat_adx_kuat_ge_28", 0))
+        parse_int(pola.get("rugi_saat_adx_kuat_ge_30", pola.get("rugi_saat_adx_kuat_ge_28", 0)))
         + parse_int(pola.get("rugi_tahan_lama_ge_10_menit", 0))
         + parse_int(pola.get("rugi_skor_tinggi_ge_75", 0))
     )
@@ -511,6 +510,7 @@ def jalankan_evaluasi():
         json.dump(laporan, f, ensure_ascii=False, indent=2)
 
     pola_mem = memori.get("pola_kesalahan", {})
+    adx_kuat_val = pola_mem.get("rugi_saat_adx_kuat_ge_30", pola_mem.get("rugi_saat_adx_kuat_ge_28", 0))
     lines = [
         "# Laporan Evaluasi Riset Scalping Otomatis",
         f"- **Diperbarui:** {waktu_wib_str}",
@@ -524,7 +524,7 @@ def jalankan_evaluasi():
         "",
         "## Memori & Pembelajaran Kesalahan (`error_memory.json`)",
         f"- **Evaluasi Ke-:** {memori.get('total_evaluasi', 0)} | **Streak Evaluasi Rugi:** {memori.get('streak_rugi_evaluasi', 0)}",
-        f"- **Pola Rugi Terekam:** ADX Kuat (>=28): `{pola_mem.get('rugi_saat_adx_kuat_ge_28', 0)}` | ADX Lemah (<20): `{pola_mem.get('rugi_saat_adx_lemah_lt_20', 0)}` | Tahan >=10m: `{pola_mem.get('rugi_tahan_lama_ge_10_menit', 0)}` | Skor Tinggi (>=75): `{pola_mem.get('rugi_skor_tinggi_ge_75', 0)}`",
+        f"- **Pola Rugi Terekam:** ADX Kuat (>={int(ADX_REM_TANGAN)}): `{adx_kuat_val}` | ADX Lemah (<20): `{pola_mem.get('rugi_saat_adx_lemah_lt_20', 0)}` | Tahan >=10m: `{pola_mem.get('rugi_tahan_lama_ge_10_menit', 0)}` | Skor Tinggi (>=75): `{pola_mem.get('rugi_skor_tinggi_ge_75', 0)}`",
         "",
         "## Klasifikasi Tiap Entry",
         f"- Untung Besar: {stats['kategori']['UNTUNG_BESAR']}",
