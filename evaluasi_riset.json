@@ -1,52 +1,52 @@
 {
-  "updated_wib": "2026-11-25 23:20:45 WIB",
+  "updated_wib": "2026-11-25 23:25:09 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
     "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3.5-transcribe) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 122,
+    "total_trade": 123,
     "win_count": 77,
-    "loss_count": 45,
-    "win_rate_pct": 63.11,
-    "net_profit_usd": -59.88,
+    "loss_count": 46,
+    "win_rate_pct": 62.6,
+    "net_profit_usd": -74.42,
     "kategori": {
       "UNTUNG_BESAR": 28,
       "UNTUNG_KECIL": 25,
       "RUGI_KECIL": 8,
-      "RUGI_BESAR": 37,
+      "RUGI_BESAR": 38,
       "CUT_UNTUNG_TIDAK_STABIL": 24,
       "CUT_RUGI_TIDAK_STABIL": 0
     },
     "rata_durasi_menit": {
       "ke_tp": 13.19,
-      "ke_sl": 8.67,
+      "ke_sl": 9.38,
       "auto_cut_tanpa_tp_sl": 2.9
     }
   },
   "kondisi_profit_dan_erosi": {
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_usd": 65.36,
-    "erosi_dari_puncak_pct": 1192.7,
+    "erosi_dari_puncak_usd": 79.9,
+    "erosi_dari_puncak_pct": 1458.03,
     "rem_tangan_30pct_aktif": true
   },
   "memori_kesalahan": {
     "total_evaluasi": 1,
     "streak_rugi_evaluasi": 1,
-    "total_trade_terakhir": 122,
-    "net_pnl_terakhir": -59.88,
+    "total_trade_terakhir": 123,
+    "net_pnl_terakhir": -74.42,
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_pct": 1192.7,
+    "erosi_dari_puncak_pct": 1458.03,
     "pola_kesalahan": {
-      "rugi_tahan_lama_ge_10_menit": 9,
-      "rugi_skor_tinggi_ge_75": 36,
+      "rugi_tahan_lama_ge_10_menit": 10,
+      "rugi_skor_tinggi_ge_75": 37,
       "rugi_cut_tidak_stabil": 0
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-25 23:20:45 WIB] Trade=122, Net=$-59.88 (Peak=$5.48, Erosi=1192.7%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (36x)."
+      "[2026-11-25 23:25:09 WIB] Trade=123, Net=$-74.42 (Peak=$5.48, Erosi=1458.03%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (37x)."
     ],
-    "terakhir_update_wib": "2026-11-25 23:20:45 WIB"
+    "terakhir_update_wib": "2026-11-25 23:25:09 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -158,19 +158,19 @@
       "hasil_blok": "RUGI"
     },
     {
-      "blok": "Entry #121 - #122",
-      "jumlah_entry": 2,
+      "blok": "Entry #121 - #123",
+      "jumlah_entry": 3,
       "win": 1,
-      "loss": 1,
-      "net_pnl_usd": -9.9,
-      "rata_durasi_menit": 18.34,
+      "loss": 2,
+      "net_pnl_usd": -24.44,
+      "rata_durasi_menit": 24.14,
       "hasil_blok": "RUGI"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 23:20:45 WIB",
+    "updated_wib": "2026-11-25 23:25:09 WIB",
     "mode_trading": "CAUTIOUS",
-    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #111 - #120: $-7.78, Net=$-59.88, RugiBesar=37): min peluang 63%, ATR 0.35.",
+    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #111 - #120: $-7.78, Net=$-74.42, RugiBesar=38): min peluang 63%, ATR 0.35.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
     "cut_profit_min_pct": 10.0,
@@ -1890,6 +1890,20 @@
       "priority_flag": "NORMAL",
       "holding_seconds": 2110,
       "holding_minutes": 35.17,
+      "exit_reason": "SL_HIT",
+      "score_m5": 80,
+      "score_m15": 80,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 123,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -14.54,
+      "balance_impact_pct": -0.29,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 2145,
+      "holding_minutes": 35.75,
       "exit_reason": "SL_HIT",
       "score_m5": 80,
       "score_m15": 80,
