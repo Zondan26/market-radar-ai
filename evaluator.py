@@ -17,8 +17,8 @@ PROFIT_EROSION_TRIGGER_PCT = 30.0
 MIN_PEAK_PROFIT_FOR_30PCT = 5.00
 BALANCE_DROP_PAUSE_PCT = 10.0
 PAUSE_DURATION_SECONDS = 3600
-TP_MIN_ENTRY_PCT = 10.0
-TP_MAX_ENTRY_PCT = 15.0
+CUT_PROFIT_MIN_PCT = 10.0
+CUT_PROFIT_MAX_PCT = 15.0
 
 
 def parse_float(val, default=0.0):
@@ -36,7 +36,7 @@ def parse_int(val, default=0):
 
 
 def klasifikasi_hasil(profit_usd, exit_reason):
-    if exit_reason == "UNSTABLE_PROFIT_GRAB":
+    if exit_reason in ("UNSTABLE_PROFIT_GRAB", "PROFIT_CUT_10_15_PCT"):
         return "CUT_UNTUNG_TIDAK_STABIL" if profit_usd >= 0 else "CUT_RUGI_TIDAK_STABIL"
     if profit_usd >= BIG_WIN_USD:
         return "UNTUNG_BESAR"
@@ -182,11 +182,11 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
     cmd = {
         "updated_wib": waktu_wib_str,
         "mode_trading": "ACTIVE",
-        "alasan_arahan": "Mode aktif: TP 10%-15% dari nilai entry, entry terbuka selama sinyal candle memenuhi, jeda 1 jam jika saldo turun >=10% dari puncak.",
+        "alasan_arahan": "Mode aktif: cut profit 10%-15% dari nilai entry, entry terbuka selama sinyal candle memenuhi, jeda 1 jam jika saldo turun >=10% dari puncak.",
         "min_probabilitas": 60,
         "wajib_kompak_m15": True,
-        "tp_entry_min_pct": TP_MIN_ENTRY_PCT,
-        "tp_entry_max_pct": TP_MAX_ENTRY_PCT,
+        "cut_profit_min_pct": CUT_PROFIT_MIN_PCT,
+        "cut_profit_max_pct": CUT_PROFIT_MAX_PCT,
         "balance_drop_pause_pct": BALANCE_DROP_PAUSE_PCT,
         "pause_duration_seconds": PAUSE_DURATION_SECONDS,
         "max_posisi": DEFAULT_MAX_POSISI,
@@ -202,7 +202,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
     total = stats["total_trade"]
     if total < 10:
         cmd["alasan_arahan"] = (
-            f"Sampel baru {total} entry: TP 10%-15% dari entry, entry selama sinyal candle memungkinkan, "
+            f"Sampel baru {total} entry: cut profit 10%-15%, entry terbuka selama sinyal candle memungkinkan, "
             f"jeda 1 jam bila saldo turun >=10% dari puncak."
         )
         return cmd
@@ -233,7 +233,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["max_posisi"] = DEFAULT_MAX_POSISI
         cmd["jarak_tambah_atr"] = 0.35 if rugi_pola_berat >= 3 else 0.30
         cmd["alasan_arahan"] = (
-            f"TP 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS "
+            f"Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS "
             f"({acuan_blok['blok']}: ${acuan_blok['net_pnl_usd']}, Net=${stats['net_profit_usd']}, RugiBesar={rug_besar}): "
             f"min peluang {cmd['min_probabilitas']}%, ATR {cmd['jarak_tambah_atr']}."
         )
@@ -243,7 +243,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["max_posisi"] = DEFAULT_MAX_POSISI
         cmd["jarak_tambah_atr"] = 0.30
         cmd["alasan_arahan"] = (
-            f"TP 10%-15% | Entry terbuka selama sinyal candle memenuhi | Profit terkikis {info_erosi['erosi_dari_puncak_pct']}% "
+            f"Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Profit terkikis {info_erosi['erosi_dari_puncak_pct']}% "
             f"(${info_erosi['erosi_dari_puncak_usd']} dari puncak ${info_erosi['peak_profit_usd']})."
         )
     elif win_rate >= 65.0 and rug_besar <= 2 and stats["net_profit_usd"] > 0:
@@ -253,7 +253,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["jarak_tambah_atr"] = 0.25
         cmd["alasan_arahan"] = (
             f"Keuntungan besar & aman (Net=${stats['net_profit_usd']}, Peak=${info_erosi['peak_profit_usd']}, "
-            f"Erosi={info_erosi['erosi_dari_puncak_pct']}%, WR {win_rate}%): mode ACTIVE dengan TP 10%-15%."
+            f"Erosi={info_erosi['erosi_dari_puncak_pct']}%, WR {win_rate}%): mode ACTIVE dengan cut profit 10%-15%."
         )
     else:
         cmd["mode_trading"] = "ACTIVE"
@@ -262,7 +262,7 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["jarak_tambah_atr"] = 0.28
         cmd["alasan_arahan"] = (
             f"Erosi profit masih ringan ({info_erosi['erosi_dari_puncak_pct']}% dari puncak ${info_erosi['peak_profit_usd']}, "
-            f"Net=${stats['net_profit_usd']}): mode ACTIVE dengan TP 10%-15%."
+            f"Net=${stats['net_profit_usd']}): mode ACTIVE dengan cut profit 10%-15%."
         )
 
     return cmd
@@ -319,7 +319,7 @@ def panggil_gemini_evaluasi(ringkasan_data):
     kandidat_list, info_model = cari_model_gemini_aktif(api_key)
 
     prompt = (
-        "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD, TP 10%-15%). "
+        "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD, cut profit 10%-15%). "
         "Tulis analisis singkat, padat, dan tuntas sampai selesai tanpa terpotong dalam bahasa Indonesia:\n"
         "1. Evaluasi profit vs rugi (termasuk puncak profit, persentase erosi profit, dan perbandingan auto-cut vs SL).\n"
         "2. Evaluasi durasi tahan ke TP, SL, dan auto-cut.\n"
@@ -511,7 +511,7 @@ def jalankan_evaluasi():
         f"- **Total Entry:** {stats['total_trade']} | **Win Rate:** {stats['win_rate_pct']}% | **Net P/L:** ${stats['net_profit_usd']} | **Puncak Profit:** ${info_erosi['peak_profit_usd']} (Erosi: {info_erosi['erosi_dari_puncak_pct']}%)",
         "",
         "## Perintah Aktif untuk MT5 (`strategy_command.json`)",
-        f"- **Mode:** `{perintah['mode_trading']}` | **Min Peluang:** `{perintah['min_probabilitas']}%` | **TP Entry:** `{perintah['tp_entry_min_pct']}% - {perintah['tp_entry_max_pct']}%` | **Max Posisi (Lot 0.01):** `{perintah['max_posisi']}`",
+        f"- **Mode:** `{perintah['mode_trading']}` | **Min Peluang:** `{perintah['min_probabilitas']}%` | **Cut Profit:** `{perintah['cut_profit_min_pct']}% - {perintah['cut_profit_max_pct']}%` | **Max Posisi (Lot 0.01):** `{perintah['max_posisi']}`",
         f"- **Aturan Saldo:** Jeda `{int(perintah['pause_duration_seconds'] / 60)} menit` jika saldo turun `>={perintah['balance_drop_pause_pct']}%` dari saldo tertinggi, lalu lanjut entry otomatis",
         f"- **Jarak Tambah ATR:** `{perintah['jarak_tambah_atr']}` | **Auto-Cut Goyah:** `{'AKTIF' if perintah['auto_cut_unstable'] else 'NONAKTIF'}`",
         f"- **Alasan Arahan:** {perintah['alasan_arahan']}",
