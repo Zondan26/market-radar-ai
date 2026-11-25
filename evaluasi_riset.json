@@ -1,0 +1,24 @@
+{
+  "updated_at": "2026-11-25 01:23 UTC",
+  "statistik": {
+    "total_trade": 0,
+    "win_count": 0,
+    "loss_count": 0,
+    "win_rate_pct": 0.0,
+    "net_profit_usd": 0.0,
+    "kategori": {
+      "UNTUNG_BESAR": 0,
+      "UNTUNG_KECIL": 0,
+      "RUGI_KECIL": 0,
+      "RUGI_BESAR": 0,
+      "CUT_UNTUNG_TIDAK_STABIL": 0,
+      "CUT_RUGI_TIDAK_STABIL": 0
+    },
+    "rata_durasi_menit": {
+      "ke_tp": 0.0,
+      "ke_sl": 0.0,
+      "auto_cut_tanpa_tp_sl": 0.0
+    }
+  },
+  "ai_analisis": "Catatan: Gagal memanggil Gemini API (HTTP Error 404: Not Found). Evaluasi statistik lokal tetap tersimpan."
+}
