@@ -1,45 +1,45 @@
 {
-  "updated_wib": "2026-11-25 13:12:50 WIB",
+  "updated_wib": "2026-11-25 13:13:25 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
-    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3-flash-preview) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
+    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 64,
+    "total_trade": 65,
     "win_count": 38,
-    "loss_count": 26,
-    "win_rate_pct": 59.38,
-    "net_profit_usd": -61.67,
+    "loss_count": 27,
+    "win_rate_pct": 58.46,
+    "net_profit_usd": -68.06,
     "kategori": {
       "UNTUNG_BESAR": 16,
       "UNTUNG_KECIL": 15,
       "RUGI_KECIL": 3,
-      "RUGI_BESAR": 23,
+      "RUGI_BESAR": 24,
       "CUT_UNTUNG_TIDAK_STABIL": 7,
       "CUT_RUGI_TIDAK_STABIL": 0
     },
     "rata_durasi_menit": {
       "ke_tp": 38.23,
-      "ke_sl": 7.86,
+      "ke_sl": 7.66,
       "auto_cut_tanpa_tp_sl": 1.45
     }
   },
   "memori_kesalahan": {
     "total_evaluasi": 1,
     "streak_rugi_evaluasi": 1,
-    "total_trade_terakhir": 64,
-    "net_pnl_terakhir": -61.67,
+    "total_trade_terakhir": 65,
+    "net_pnl_terakhir": -68.06,
     "pola_kesalahan": {
-      "rugi_saat_adx_kuat_ge_28": 23,
+      "rugi_saat_adx_kuat_ge_28": 24,
       "rugi_saat_adx_lemah_lt_20": 0,
       "rugi_tahan_lama_ge_10_menit": 5,
       "rugi_skor_tinggi_ge_75": 19
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-25 13:12:50 WIB] Trade=64, Net=$-61.67 (sebelumnya $0.0), StreakRugi=1, PolaRugiTerbanyak=rugi_saat_adx_kuat_ge_28 (23x)."
+      "[2026-11-25 13:13:25 WIB] Trade=65, Net=$-68.06 (sebelumnya $0.0), StreakRugi=1, PolaRugiTerbanyak=rugi_saat_adx_kuat_ge_28 (24x)."
     ],
-    "terakhir_update_wib": "2026-11-25 13:12:50 WIB"
+    "terakhir_update_wib": "2026-11-25 13:13:25 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -97,19 +97,19 @@
       "hasil_blok": "RUGI"
     },
     {
-      "blok": "Entry #61 - #64",
-      "jumlah_entry": 4,
+      "blok": "Entry #61 - #65",
+      "jumlah_entry": 5,
       "win": 0,
-      "loss": 4,
-      "net_pnl_usd": -25.06,
-      "rata_durasi_menit": 2.64,
+      "loss": 5,
+      "net_pnl_usd": -31.45,
+      "rata_durasi_menit": 2.71,
       "hasil_blok": "RUGI"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 13:12:50 WIB",
+    "updated_wib": "2026-11-25 13:13:25 WIB",
     "mode_trading": "CAUTIOUS",
-    "alasan_arahan": "Belajar dari kesalahan (Entry #51 - #60: $-15.01, Net=$-61.67, RugiBesar=23): mode CAUTIOUS, min peluang 63%, max posisi 40, ATR 0.35.",
+    "alasan_arahan": "Belajar dari kesalahan (Entry #51 - #60: $-15.01, Net=$-68.06, RugiBesar=24): mode CAUTIOUS, min peluang 63%, max posisi 40, ATR 0.35.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
     "max_posisi": 40,
@@ -1081,7 +1081,22 @@
       "score_m15": 85,
       "adx_m5": 55.28,
       "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 65,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -6.39,
+      "balance_impact_pct": -0.13,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 179,
+      "holding_minutes": 2.98,
+      "exit_reason": "SL_HIT",
+      "score_m5": 70,
+      "score_m15": 70,
+      "adx_m5": 58.48,
+      "kategori": "RUGI_BESAR"
     }
   ],
-  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis Anda secara objektif dan ringkas:\n\n### 1. Evaluasi Entry: Profit vs Loss\n*   **Analisis Profit:** Untung Besar (16) dan Untung Kecil (15) didominasi oleh `BASKET_PROFIT_CUT`. Ini menunjukkan sistem berhasil mengamankan profit kolektif, namun nilainya sering kali kecil (rata-rata profit jauh di bawah nilai SL).\n*   **Analisis Rugi:** Rugi Besar (23) hampir seluruhnya disebabkan oleh `SL_HIT`. Terjadi ketimpangan fatal: sistem melakukan *auto-cut* profit dengan cepat (rata-rata 1.45 menit), tetapi membiarkan rugi menyentuh SL penuh.\n*   **Perbandingan RRR:** Rasio *Risk-to-Reward* sangat buruk. Meskipun *Win Rate* 59%, *Net Profit* tetap minus (-$61.67) karena satu kali rugi (SL) menghapus keuntungan dari 3-4 kali menang.\n\n### 2. Evaluasi Jeda Waktu (Holding Time)\n*   **Kecepatan SL:** Rata-rata durasi ke SL sangat singkat (**7.86 menit**) dibandingkan ke TP (**38.23 menit**). Ini mengindikasikan entry sering dilakukan di \"pucuk\" atau saat momentum lawan sangat kuat, sehingga harga langsung menghantam SL.\n*   **Auto-Cut Instabilitas:** Fitur `auto_cut_unstable` bekerja sangat agresif (1.45 menit). Hal ini menyelamatkan akun dari volatilitas, tetapi juga memangkas potensi profit yang seharusnya bisa berkembang lebih besar jika diberikan ruang napas.\n\n### 3. Evaluasi Blok Entry & Memori Kesalahan\n*   **Tren Per Blok:**\n    *   **Entry #31 - #50:** Sempat membaik (Untung).\n    *   **Entry #51 - #64:** Performa hancur total (Rugi beruntun).\n*   **Pola Kesalahan Berulang:** Kesalahan **masih terulang dan memburuk**.\n    *   **ADX Tinggi (>= 28):** 23 kali rugi terjadi saat tren sangat kuat. Sistem scalping ini tampaknya mencoba melawan arus (*counter-trend*) atau masuk saat tren sudah jenuh, namun justru tergilas momentum.\n    *   **Skor Tinggi (>= 75):** 19 kali rugi terjadi saat skor indikator sangat meyakinkan. Ini menunjukkan adanya \"False Signal\" pada algoritma scoring saat menghadapi volatilitas XAUUSD.\n\n### 4. Saran Penyetelan Parameter (Action Plan)\nUntuk memperbaiki performa secara bertahap, disarankan mengubah parameter berikut:\n\n1.  **Filter ADX (Hard Stop):**\n    *   **Setelan:** Tambahkan parameter `max_adx_entry: 25`.\n    *   **Alasan:** Data menunjukkan 23 rugi besar terjadi saat ADX > 28. Menghindari entry saat tren terlalu kuat akan memangkas 80% total kerugian Anda.\n2.  **Sinkronisasi Skor & Timeframe:**\n    *   **Setelan:** `wajib_kompak_m15: true` dengan `min_score: 80`.\n    *   **Alasan:** Banyak rugi terjadi pada skor tinggi. Memperketat syarat kekompakan antara M5 dan M15 akan menyaring sinyal palsu pada XAUUSD yang sering bergerak liar di timeframe rendah.\n3.  **Penyesuaian Rasio Basket Cut:**\n    *   **Setelan:** Naikkan `min_untung_cut_usd` menjadi lebih tinggi atau gunakan `trailing_stop` pada level basket.\n    *   **Alasan:** Agar rata-rata kemenangan tidak terlalu kecil dibandingkan hantaman SL yang besar. Jika rugi dibatasi ketat, maka profit harus dibiarkan sedikit lebih lebar."
+  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis (XAUUSD & EURUSD) secara objektif, bertahap, dan ringkas:\n\n### 1. Evaluasi Tiap Entry & Perbandingan Profit vs Loss\n*   **Penyebab Untung (Besar/Kecil):** Sebagian besar keuntungan diraih melalui mekanisme `BASKET_PROFIT_CUT` pada kondisi tren yang stabil. Untung besar terjadi ketika momentum searah dengan durasi singkat (1-2 menit), sedangkan untung kecil dicapai saat target profit tercapai lebih cepat atau dipotong dini (`smart_early_tp`).\n*   **Penyebab Rugi (Besar/Kecil):** Seluruh kerugian besar (`RUGI_BESAR`, 24 kejadian) disebabkan oleh tersentuhnya Stop Loss (`SL_HIT`) akibat perlawanan arah harga yang kuat secara tiba-tiba.\n*   **Perbandingan Profit vs Rugi:** Terjadi asimetri negatif yang signifikan. Rata-rata *auto-cut profit* jauh lebih kecil dibandingkan rata-rata kerugian saat terkena SL (Loss per SL rata-rata berkisar di angka -$6.00+, sedangkan profit bersih kumulatif tergerus di angka -$68.06 meski *win rate* mencapai 58.46%).\n\n### 2. Evaluasi Jeda Waktu (Holding Time)\n*   **Ke TP / Basket Profit:** Rata-rata durasi ke TP adalah **38.23 menit** (untuk TP konvensional) atau sangat cepat (1-3 menit) untuk *basket cut*, menunjukkan sistem efektif mengamankan profit kilat.\n*   **Ke SL:** Rata-rata durasi kena SL adalah **7.66 menit**, yang berarti posisi rugi cenderung dibiarkan lebih lama dibanding target scalping ideal.\n*   **Kondisi Tidak Stabil:** Auto-cut tanpa TP/SL sangat cepat (**1.45 menit**), menunjukkan fitur proteksi saat market tidak stabil sudah berfungsi memotong potensi kerugian lebih dalam.\n\n### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (*Error Memory*)\n*   **Performa per Blok:** Performa sangat fluktuatif. Blok awal (#1-#20) dan akhir (#51-#65) mencatatkan kerugian berat, sementara blok tengah (#31-#50) sempat konsisten membukukan profit. 5 entry terakhir (#61-#65) mengalami kekalahan mutlak (0% win).\n*   **Pola Kesalahan:** Memori kesalahan mencatat **24 kasus rugi saat ADX kuat ($\\ge 28$)** dan **19 kasus rugi saat skor tinggi ($\\ge 75$)**. \n*   **Status Perbaikan:** Pola kesalahan **belum membaik dan masih berulang**, terbukti dari entry #53 hingga #65 di mana sistem terus melakukan entry SELL saat ADX sangat tinggi (>51 hingga 58) yang berujung pada beruntunnya *SL Hit* akibat kondisi market yang ternyata sedang *trend strong/reversal*.\n\n### 4. Saran Penyetelan Parameter Konkret\n1.  **Filter ADX Maksimal (Regulasi Tren):** Tambahkan batas atas ADX (misal: `max_adx: 45.0`). Jika ADX di atas 45, hentikan aksi *scalping* karena pasar terlalu liar atau berisiko tinggi mengalami *exhaustion/reversal* tajam yang menembus SL.\n2.  **Perketat Manajemen Risiko (Risk-Reward Ratio):** Sesuaikan jarak SL agar lebih ketat atau percepat *auto-cut* pada posisi yang melawan tren, mengingat kerugian per SL (`-$6`) jauh lebih besar daripada rata-rata profit bersih per entry.\n3.  **Evaluasi Skor Validasi M5+M15:** Naikkan ambang batas skor (*min_probabilitas*) dari 63% menjadi minimal 70-75% khusus untuk instrumen XAUUSD guna menghindari sinyal palsu saat volatilitas tinggi."
 }

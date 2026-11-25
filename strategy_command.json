@@ -1,7 +1,7 @@
 {
-  "updated_wib": "2026-11-25 13:12:50 WIB",
+  "updated_wib": "2026-11-25 13:13:25 WIB",
   "mode_trading": "CAUTIOUS",
-  "alasan_arahan": "Belajar dari kesalahan (Entry #51 - #60: $-15.01, Net=$-61.67, RugiBesar=23): mode CAUTIOUS, min peluang 63%, max posisi 40, ATR 0.35.",
+  "alasan_arahan": "Belajar dari kesalahan (Entry #51 - #60: $-15.01, Net=$-68.06, RugiBesar=24): mode CAUTIOUS, min peluang 63%, max posisi 40, ATR 0.35.",
   "min_probabilitas": 63,
   "wajib_kompak_m15": true,
   "max_posisi": 40,
