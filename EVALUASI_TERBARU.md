@@ -1,5 +1,5 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-25 13:52:06 WIB
+- **Diperbarui:** 2026-11-25 14:45:25 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
 - **Total Entry:** 73 | **Win Rate:** 58.9% | **Net P/L:** $-56.5 | **Puncak Profit:** $5.48 (Erosi: 1131.02%)
 
@@ -36,23 +36,25 @@
 - **Entry #71 - #73:** UNTUNG ($6.66) | 2W / 1L | Rata-rata durasi: 13.45 menit
 
 ## Analisis Evaluasi AI
-Berikut adalah analisis evaluasi riset scalping otomatis (XAUUSD & EURUSD, lot 0.01, M5+M15) secara singkat, padat, dan tuntas:
+Berikut adalah analisis evaluasi riset scalping otomatis (XAUUSD & EURUSD) yang disusun secara singkat, padat, dan tuntas:
 
 ### 1. Evaluasi Profit vs Rugi
-* **Kinerja Keseluruhan:** Meskipun tingkat kemenangan (*win rate*) tampak moderat di angka **58.9%** (43 win / 30 loss), sistem mencatatkan net profit negatif **-$56.5 USD**. 
-* **Erosi Profit:** Terjadi anomali ekstrem pada pengelolaan profit. Sistem sempat mencapai puncak keuntungan (*peak profit*) sebesar **$5.48 USD**, namun mengalami erosi parah sebesar **-$61.98 USD** atau setara dengan **1,131.02%**.
-* **Perbandingan Auto-Cut vs SL:** Kategori `RUGI_BESAR` mendominasi (24 kejadian) yang sebagian besar dieksekusi melalui *Stop Loss (SL_HIT)* dengan nilai kerugian per trade yang konstan di kisaran -$5.9 hingga -$6.5 USD. Sebaliknya, *auto-cut* (`BASKET_PROFIT_CUT`) sering menutup posisi dengan profit kecil atau rugi mikro, gagal menahan posisi pemenang lebih lama untuk mengimbangi besarnya nilai SL.
+* **Kinerja Keseluruhan:** Meskipun win rate berada di angka cukup baik yaitu **58,9%** (43 win / 30 loss), sistem membukukan net profit negatif sebesar **-$56,5 USD**. Hal ini terjadi karena asimetri risiko di mana *Rugi Besar* mendominasi (24 kejadian) dibandingkan *Untung Besar* (20 kejadian).
+* **Puncak Profit & Erosi:** Puncak profit (*peak profit*) tercatat sebesar **+$5,48 USD**, namun mengalami erosi masif sebesar **-$61,98 USD** atau setara dengan **1131,02%** dari puncak profit. Angka ini menunjukkan bahwa sistem gagal mengamankan profit saat tren berbalik, memaksa fitur rem tangan 30% aktif.
+* **Auto-Cut vs SL:** Sebagian besar exit didorong oleh *Basket Profit Cut* dan *SL Hit*. Ketika tren kuat melawan posisi, Stop Loss (SL) mencatatkan kerugian nominal yang cukup besar per entry (rata-rata di atas -$6 USD), sementara auto-cut cepat dilakukan pada durasi sangat singkat namun belum mampu memangkas kerugian besar secara efektif.
 
-### 2. Evaluasi Durasi Tahan
-* **Ke TP (Take Profit):** Rata-rata durasi bertahan hingga mencapai target profit adalah **38.23 menit**, menunjukkan bahwa *winning trades* membutuhkan waktu lebih panjang untuk matang.
-* **Ke SL (Stop Loss):** Rata-rata durasi terkena SL adalah **7.66 menit**, mengindikasikan bahwa volatilitas pasar langsung menghantam batas risiko dalam waktu relatif singkat.
-* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi sangat cepat yaitu **2.21 menit**, menunjukkan fungsi pengaman darurat merespons kondisi fluktuatif dengan sigap tetapi belum efektif memfilter kualitas entry awal.
+### 2. Evaluasi Durasi Tahan (TP, SL, Auto-Cut)
+* **Ke TP (Profit):** Rata-rata durasi bertahan hingga mencapai target profit adalah **38,23 menit**. Durasi ini relatif panjang untuk ukuran scalping, menunjukkan ketergantungan pada momentum tren yang stabil.
+* **Ke SL (Loss):** Rata-rata durasi terkena SL adalah **7,66 menit**, mengindikasikan bahwa posisi yang salah arah cenderung cepat tereksekusi oleh batas risiko ketika volatilitas melonjak.
+* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi **2,21 menit** menunjukkan respons pemotongan otomatis yang sangat agresif pada fase awal entry, yang efektif mencegah kerugian compounding lebih dalam pada scalping jangka pendek.
 
-### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (*Error Memory*)
-* **Blok 10 Entry:** Performa sangat tidak stabil. Blok awal (#1-#30) dan pertengahan (#51-#70) banyak diwarnai hasil negatif (contoh terburuk pada blok #11-#20 dengan rugi **-$33.89 USD**). Profitabilitas hanya konsisten pada blok #31-#50.
-* **Pola Kesalahan Utama:** Sistem *error_memory* mendeteksi korelasi kerugian mutlak pada **`rugi_saat_adx_kuat_ge_28` (27 kejadian)** dan **`rugi_skor_tinggi_ge_75` (21 kejadian)**. Akar masalahnya adalah sistem tetap agresif melakukan entry (bahkan saat skor sinyal tinggi ≥75) di tengah kondisi pasar dengan ADX sangat kuat (>28), yang mana pada instrumen XAUUSD justru sering memicu pembalikan arah atau *fake breakout* alih-alih tren berkelanjutan.
+### 3. Evaluasi Blok 10 Entry dan Pola Kesalahan (`error_memory`)
+* **Kinerja Blok:** Performa sangat fluktuatif. Blok awal (#1-#20) dan blok tengah (#51-#70) mengalami kerugian besar (contoh: blok #11-#20 rugi -$33,89 dan blok #61-#70 rugi -$26,55). Sebaliknya, blok #31-#50 mencatat hasil positif konsisten karena kondisi pasar yang lebih bersahabat.
+* **Pola Kesalahan Utama (`error_memory`):** 
+  - **27 trade rugi** terjadi saat **ADX kuat (≥ 28)**, membuktikan bahwa sistem keliru masuk posisi *counter-trend* atau terlalu agresif mengejar tren yang sudah jenuh (exhaustion).
+  - **21 trade rugi** terjadi saat **skor tinggi (≥ 75)**, menunjukkan indikator pentahapan skor masih menghasilkan *false signal* pada kondisi volatilitas tinggi XAUUSD.
 
 ### 4. Saran Penyetelan Parameter Konkret
-1. **Perketat Filter ADX Maksimal (`max_adx_entry`):** Turunkan batas maksimal ADX dari 28.0 menjadi **24.0** untuk menghindari entry di tengah volatilitas tren jenuh (*exhausted trend*), mengingat 27 kerugian besar terjadi saat ADX ≥28.
-2. **Terapkan Rasio Risiko-Imbalan yang Sehat (*Risk-to-Reward Ratio*):** Perlebar target *Smart Early TP* atau perketat *Stop Loss* karena saat ini nilai SL tunggal jauh lebih besar dibandingkan rata-rata *Basket Profit Cut*, membuat 1 kali SL menghapus hasil 3-4 kali *win*.
-3. **Optimalkan Jarak Tambah Posisi (`jarak_tambah_atr`):** Naikkan pengali ATR dari 0.35 menjadi **0.50 - 0.65** pada mode *Cautious* untuk mencegah penumpukan posisi (*averaging/grid*) terlalu rapat saat XAUUSD bergerak fluktuatif dalam rentang sempit ber-ADX tinggi.
+1. **Perketat Filter ADX Maksimal:** Turunkan atau pertahankan batas `max_adx_entry` secara ketat di bawah **28.0** (sesuai mode *CAUTIOUS* saat ini). Hindari entry sama sekali jika ADX M5/M15 menunjukkan angka di atas 30 untuk mencegah jebakan tren kuat yang berbalik arah.
+2. **Optimasi Trailing Stop / Smart Early TP:** Mengingat erosi profit mencapai >1100%, turunkan ambang batas `min_rasio_early_tp` atau percepat aktivasi *trailing stop* berbasis persentase profit kecil agar *peak profit* ($5.48) tidak habis tergerus oleh pembalikan arah mendadak.
+3. **Validasi Ulang Skor Sinyal (≥75):** Lakukan rekalibrasi bobot indikator untuk mencegah *false high score* pada kondisi market trending ekstrem, serta wajibkan penyelarasan arah tren multi-timeframe (M5 + M15) secara lebih ketat sebelum eksekusi lot.
