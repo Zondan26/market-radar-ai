@@ -117,11 +117,16 @@ def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
 def panggil_gemini_evaluasi(ringkasan_data):
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
-        return None
+        return {
+            "status": "BELUM_ADA_API_KEY",
+            "keterangan": "GEMINI_API_KEY belum terbaca di environment GitHub Actions.",
+            "teks": "API Key Gemini belum terpasang; evaluasi statistik lokal tetap tersimpan.",
+        }
 
+    model_name = "gemini-2.5-flash"
     url = (
         "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"gemini-2.5-flash:generateContent?key={api_key}"
+        f"{model_name}:generateContent?key={api_key}"
     )
 
     prompt = (
@@ -153,11 +158,22 @@ def panggil_gemini_evaluasi(ringkasan_data):
             if candidates:
                 parts = candidates[0].get("content", {}).get("parts", [])
                 if parts and "text" in parts[0]:
-                    return parts[0]["text"].strip()
+                    return {
+                        "status": "TERSAMBUNG",
+                        "keterangan": f"Berhasil terhubung ke Gemini API ({model_name}) via GEMINI_API_KEY.",
+                        "teks": parts[0]["text"].strip(),
+                    }
+        return {
+            "status": "RESPON_KOSONG",
+            "keterangan": f"Terhubung ke {model_name}, tetapi tidak ada teks jawaban yang dikembalikan.",
+            "teks": "Tidak ada respons teks dari Gemini; evaluasi statistik lokal tetap tersimpan.",
+        }
     except Exception as exc:
-        return f"Catatan: Gagal memanggil Gemini API ({exc}). Evaluasi statistik lokal tetap tersimpan."
-
-    return None
+        return {
+            "status": "GAGAL_KONEKSI",
+            "keterangan": f"Gagal memanggil Gemini API ({exc}).",
+            "teks": f"Catatan: Gagal memanggil Gemini API ({exc}). Evaluasi statistik lokal tetap tersimpan.",
+        }
 
 
 def jalankan_evaluasi():
@@ -246,7 +262,7 @@ def jalankan_evaluasi():
     with open(COMMAND_FILE, mode="w", encoding="utf-8") as f:
         json.dump(perintah, f, ensure_ascii=False, indent=2)
 
-    ai_analisis = panggil_gemini_evaluasi({
+    hasil_gemini = panggil_gemini_evaluasi({
         "statistik": stats,
         "evaluasi_tiap_10_entry": blok_10[-10:],
         "perintah_terbit": perintah,
@@ -255,11 +271,15 @@ def jalankan_evaluasi():
 
     laporan = {
         "updated_wib": waktu_wib_str,
+        "koneksi_gemini": {
+            "status": hasil_gemini["status"],
+            "keterangan": hasil_gemini["keterangan"],
+        },
         "statistik": stats,
         "evaluasi_tiap_10_entry": blok_10,
         "perintah_aktif": perintah,
         "evaluasi_tiap_entry": detail_catatan,
-        "ai_analisis": ai_analisis or "Belum ada data transaksi atau GEMINI_API_KEY belum disetel.",
+        "ai_analisis": hasil_gemini["teks"],
     }
 
     with open(REPORT_FILE, mode="w", encoding="utf-8") as f:
@@ -268,6 +288,7 @@ def jalankan_evaluasi():
     lines = [
         "# Laporan Evaluasi Riset Scalping Otomatis",
         f"- **Diperbarui:** {waktu_wib_str}",
+        f"- **Koneksi Gemini API:** `{hasil_gemini['status']}` — {hasil_gemini['keterangan']}",
         f"- **Total Entry:** {stats['total_trade']} | **Win Rate:** {stats['win_rate_pct']}% | **Net P/L:** ${stats['net_profit_usd']}",
         "",
         "## Perintah Aktif untuk MT5 (`strategy_command.json`)",
