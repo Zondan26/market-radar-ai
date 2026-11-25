@@ -1,16 +1,17 @@
 import csv
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from urllib import request
 
 HISTORY_FILE = "trade_history.csv"
 REPORT_FILE = "evaluasi_riset.json"
 SUMMARY_MD = "EVALUASI_TERBARU.md"
+COMMAND_FILE = "strategy_command.json"
 
-# Ambang batas klasifikasi hasil (dalam USD untuk lot 0.01)
 BIG_WIN_USD = 2.00
 BIG_LOSS_USD = -2.00
+DEFAULT_MAX_POSISI = 100
 
 
 def parse_float(val, default=0.0):
@@ -32,6 +33,87 @@ def klasifikasi_hasil(profit_usd, exit_reason):
     return "RUGI_KECIL"
 
 
+def susun_blok_10_entry(detail_catatan):
+    blok_list = []
+    total = len(detail_catatan)
+    for start_idx in range(0, total, 10):
+        chunk = detail_catatan[start_idx : start_idx + 10]
+        win_c = sum(1 for x in chunk if x["profit_usd"] > 0)
+        loss_c = sum(1 for x in chunk if x["profit_usd"] < 0)
+        net_pnl = round(sum(x["profit_usd"] for x in chunk), 2)
+        avg_hold = round(sum(x["holding_minutes"] for x in chunk) / len(chunk), 2)
+        status_blok = "UNTUNG" if net_pnl > 0 else ("RUGI" if net_pnl < 0 else "IMPAS")
+        blok_list.append({
+            "blok": f"Entry #{start_idx + 1} - #{start_idx + len(chunk)}",
+            "jumlah_entry": len(chunk),
+            "win": win_c,
+            "loss": loss_c,
+            "net_pnl_usd": net_pnl,
+            "rata_durasi_menit": avg_hold,
+            "hasil_blok": status_blok,
+        })
+    return blok_list
+
+
+def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
+    cmd = {
+        "updated_wib": waktu_wib_str,
+        "mode_trading": "ACTIVE",
+        "alasan_arahan": "Mode aktif: eksekusi tanpa jeda selama syarat terpenuhi, lot terkunci 0.01, auto-cut aktif.",
+        "min_probabilitas": 60,
+        "wajib_kompak_m15": True,
+        "max_posisi": DEFAULT_MAX_POSISI,
+        "jarak_tambah_atr": 0.25,
+        "auto_cut_unstable": True,
+        "min_untung_cut_usd": 0.10,
+        "smart_early_tp": True,
+        "min_rasio_early_tp": 0.50,
+        "max_sl_harian": 10,
+    }
+
+    total = stats["total_trade"]
+    if total < 10:
+        cmd["alasan_arahan"] = (
+            f"Sampel baru {total} entry (belum genap 1 blok 10 entry): pertahankan batas peluang 60%, "
+            f"maksimal {DEFAULT_MAX_POSISI} posisi (lot 0.01), dan auto-cut saat chart/berita tidak stabil."
+        )
+        return cmd
+
+    blok_terakhir = blok_10[-1]
+    win_rate = stats["win_rate_pct"]
+    rug_besar = stats["kategori"]["RUGI_BESAR"]
+
+    if blok_terakhir["net_pnl_usd"] < 0 and blok_terakhir["loss"] >= 7:
+        cmd["mode_trading"] = "CAUTIOUS"
+        cmd["min_probabilitas"] = 66
+        cmd["max_posisi"] = 50
+        cmd["jarak_tambah_atr"] = 0.35
+        cmd["alasan_arahan"] = (
+            f"{blok_terakhir['blok']} merugi ({blok_terakhir['win']}W/{blok_terakhir['loss']}L, "
+            f"${blok_terakhir['net_pnl_usd']}): naikkan syarat peluang ke 66% dan perlebar jarak entri."
+        )
+    elif win_rate >= 65.0 and rug_besar <= 2:
+        cmd["mode_trading"] = "ACTIVE"
+        cmd["min_probabilitas"] = 60
+        cmd["max_posisi"] = DEFAULT_MAX_POSISI
+        cmd["jarak_tambah_atr"] = 0.25
+        cmd["alasan_arahan"] = (
+            f"{blok_terakhir['blok']} {blok_terakhir['hasil_blok']} (${blok_terakhir['net_pnl_usd']}) "
+            f"dengan win rate {win_rate}%: pertahankan mode aktif penuh (hingga {DEFAULT_MAX_POSISI} posisi)."
+        )
+    else:
+        cmd["mode_trading"] = "ACTIVE"
+        cmd["min_probabilitas"] = 63
+        cmd["max_posisi"] = 80
+        cmd["jarak_tambah_atr"] = 0.30
+        cmd["alasan_arahan"] = (
+            f"Evaluasi per 10 entry ({blok_terakhir['blok']}: ${blok_terakhir['net_pnl_usd']}): "
+            "sesuaikan ambang peluang ke 63% dan jarak ATR 0.30 agar kualitas entri lebih terjaga."
+        )
+
+    return cmd
+
+
 def panggil_gemini_evaluasi(ringkasan_data):
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
@@ -44,11 +126,12 @@ def panggil_gemini_evaluasi(ringkasan_data):
 
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
-        "Analisis data riwayat trading berikut secara objektif, tajam, dan ringkas dalam bahasa Indonesia:\n"
-        "1. Kenapa terjadi UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL.\n"
-        "2. Evaluasi durasi tahan (holding time) sampai TP, SL, atau auto-cut saat chart/berita tidak stabil.\n"
-        "3. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan riset berikutnya.\n\n"
-        f"DATA RINGKASAN:\n{json.dumps(ringkasan_data, ensure_ascii=False, indent=2)}"
+        "Analisis riwayat trading berikut secara objektif dan ringkas dalam bahasa Indonesia:\n"
+        "1. Evaluasi tiap entry: kenapa muncul UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL.\n"
+        "2. Evaluasi jeda waktu (holding time) sampai TP, SL, atau auto-cut saat chart/berita tidak stabil.\n"
+        "3. Evaluasi hasil tiap blok 10 kali entry (untung/rugi) serta risiko penumpukan saat entry rapat.\n"
+        "4. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan berikutnya.\n\n"
+        f"DATA EVALUASI:\n{json.dumps(ringkasan_data, ensure_ascii=False, indent=2)}"
     )
 
     payload = {
@@ -109,7 +192,7 @@ def jalankan_evaluasi():
     durasi_tp, durasi_sl, durasi_cut = [], [], []
     detail_catatan = []
 
-    for r in rows:
+    for idx_row, r in enumerate(rows, start=1):
         profit = parse_float(r.get("profit_usd", 0.0))
         durasi_detik = parse_float(r.get("holding_seconds", 0.0))
         durasi_menit = round(durasi_detik / 60.0, 2)
@@ -135,9 +218,11 @@ def jalankan_evaluasi():
             durasi_cut.append(durasi_menit)
 
         detail_catatan.append({
+            "entry_ke": idx_row,
             "symbol": symbol,
             "direction": direction,
             "profit_usd": profit,
+            "holding_seconds": int(durasi_detik),
             "holding_minutes": durasi_menit,
             "exit_reason": exit_reason,
             "kategori": kat,
@@ -152,15 +237,28 @@ def jalankan_evaluasi():
     if durasi_cut:
         stats["rata_durasi_menit"]["auto_cut_tanpa_tp_sl"] = round(sum(durasi_cut) / len(durasi_cut), 2)
 
+    wib_now = datetime.now(timezone.utc) + timedelta(hours=7)
+    waktu_wib_str = wib_now.strftime("%Y-%m-%d %H:%M:%S WIB")
+
+    blok_10 = susun_blok_10_entry(detail_catatan)
+    perintah = susun_perintah_otomatis(stats, blok_10, waktu_wib_str)
+
+    with open(COMMAND_FILE, mode="w", encoding="utf-8") as f:
+        json.dump(perintah, f, ensure_ascii=False, indent=2)
+
     ai_analisis = panggil_gemini_evaluasi({
         "statistik": stats,
-        "sampel_terakhir": detail_catatan[-25:],
+        "evaluasi_tiap_10_entry": blok_10[-10:],
+        "perintah_terbit": perintah,
+        "riwayat_tiap_entry": detail_catatan[-30:],
     })
 
-    waktu_wib = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     laporan = {
-        "updated_at": waktu_wib,
+        "updated_wib": waktu_wib_str,
         "statistik": stats,
+        "evaluasi_tiap_10_entry": blok_10,
+        "perintah_aktif": perintah,
+        "evaluasi_tiap_entry": detail_catatan,
         "ai_analisis": ai_analisis or "Belum ada data transaksi atau GEMINI_API_KEY belum disetel.",
     }
 
@@ -169,10 +267,15 @@ def jalankan_evaluasi():
 
     lines = [
         "# Laporan Evaluasi Riset Scalping Otomatis",
-        f"- **Diperbarui:** {waktu_wib}",
-        f"- **Total Transaksi:** {stats['total_trade']} | **Win Rate:** {stats['win_rate_pct']}% | **Net P/L:** ${stats['net_profit_usd']}",
+        f"- **Diperbarui:** {waktu_wib_str}",
+        f"- **Total Entry:** {stats['total_trade']} | **Win Rate:** {stats['win_rate_pct']}% | **Net P/L:** ${stats['net_profit_usd']}",
         "",
-        "## Klasifikasi Hasil",
+        "## Perintah Aktif untuk MT5 (`strategy_command.json`)",
+        f"- **Mode:** `{perintah['mode_trading']}` | **Min Peluang:** `{perintah['min_probabilitas']}%` | **Max Posisi (Lot 0.01):** `{perintah['max_posisi']}`",
+        f"- **Jarak Tambah ATR:** `{perintah['jarak_tambah_atr']}` | **Auto-Cut Goyah:** `{'AKTIF' if perintah['auto_cut_unstable'] else 'NONAKTIF'}`",
+        f"- **Alasan Arahan:** {perintah['alasan_arahan']}",
+        "",
+        "## Klasifikasi Tiap Entry",
         f"- Untung Besar: {stats['kategori']['UNTUNG_BESAR']}",
         f"- Untung Kecil: {stats['kategori']['UNTUNG_KECIL']}",
         f"- Rugi Kecil: {stats['kategori']['RUGI_KECIL']}",
@@ -180,14 +283,28 @@ def jalankan_evaluasi():
         f"- Auto-Cut Untung (Chart/Berita Tidak Stabil): {stats['kategori']['CUT_UNTUNG_TIDAK_STABIL']}",
         f"- Auto-Cut Rugi (Chart/Berita Tidak Stabil): {stats['kategori']['CUT_RUGI_TIDAK_STABIL']}",
         "",
-        "## Rata-Rata Durasi Tahan (Menit)",
+        "## Rata-Rata Jeda Waktu / Durasi Tahan",
         f"- Entry ke TP: {stats['rata_durasi_menit']['ke_tp']} menit",
         f"- Entry ke SL: {stats['rata_durasi_menit']['ke_sl']} menit",
         f"- Entry ke Auto-Cut (Tanpa TP/SL): {stats['rata_durasi_menit']['auto_cut_tanpa_tp_sl']} menit",
         "",
+        "## Rekap Tiap 10 Kali Entry",
+    ]
+
+    if blok_10:
+        for b in blok_10:
+            lines.append(
+                f"- **{b['blok']}:** {b['hasil_blok']} (${b['net_pnl_usd']}) | {b['win']}W / {b['loss']}L | "
+                f"Rata-rata durasi: {b['rata_durasi_menit']} menit"
+            )
+    else:
+        lines.append("- Belum ada data entry.")
+
+    lines.extend([
+        "",
         "## Analisis Evaluasi AI",
         laporan["ai_analisis"],
-    ]
+    ])
 
     with open(SUMMARY_MD, mode="w", encoding="utf-8") as f:
         f.write("\n".join(lines))
