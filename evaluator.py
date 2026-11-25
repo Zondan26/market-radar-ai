@@ -114,6 +114,36 @@ def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
     return cmd
 
 
+def cari_model_gemini_aktif(api_key):
+    kandidat_bawaan = [
+        ("v1beta", "models/gemini-2.5-flash"),
+        ("v1beta", "models/gemini-2.0-flash"),
+        ("v1beta", "models/gemini-flash-latest"),
+    ]
+    list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
+    try:
+        req = request.Request(list_url, method="GET")
+        with request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            tersedia = []
+            for m in data.get("models", []):
+                methods = m.get("supportedGenerationMethods", [])
+                name = m.get("name", "")
+                if "generateContent" in methods and name:
+                    tersedia.append(name)
+            for pref in ["models/gemini-2.5-flash", "models/gemini-2.0-flash", "models/gemini-flash-latest"]:
+                if pref in tersedia:
+                    return [("v1beta", pref)]
+            for name in tersedia:
+                if "flash" in name.lower():
+                    return [("v1beta", name)]
+            if tersedia:
+                return [("v1beta", tersedia[0])]
+    except Exception:
+        pass
+    return kandidat_bawaan
+
+
 def panggil_gemini_evaluasi(ringkasan_data):
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
@@ -122,12 +152,6 @@ def panggil_gemini_evaluasi(ringkasan_data):
             "keterangan": "GEMINI_API_KEY belum terbaca di environment GitHub Actions.",
             "teks": "API Key Gemini belum terpasang; evaluasi statistik lokal tetap tersimpan.",
         }
-
-    model_name = "gemini-2.5-flash"
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{model_name}:generateContent?key={api_key}"
-    )
 
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
@@ -144,36 +168,39 @@ def panggil_gemini_evaluasi(ringkasan_data):
         "generationConfig": {"temperature": 0.2},
     }
 
-    req = request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
+    last_err = ""
+    for api_ver, model_full in cari_model_gemini_aktif(api_key):
+        url = (
+            f"https://generativelanguage.googleapis.com/{api_ver}/"
+            f"{model_full}:generateContent?key={api_key}"
+        )
+        req = request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with request.urlopen(req, timeout=25) as resp:
+                body = json.loads(resp.read().decode("utf-8"))
+                candidates = body.get("candidates", [])
+                if candidates:
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    if parts and "text" in parts[0]:
+                        return {
+                            "status": "TERSAMBUNG",
+                            "keterangan": f"Berhasil terhubung ke Gemini API ({model_full}) via GEMINI_API_KEY.",
+                            "teks": parts[0]["text"].strip(),
+                        }
+        except Exception as exc:
+            last_err = str(exc)
+            continue
 
-    try:
-        with request.urlopen(req, timeout=25) as resp:
-            body = json.loads(resp.read().decode("utf-8"))
-            candidates = body.get("candidates", [])
-            if candidates:
-                parts = candidates[0].get("content", {}).get("parts", [])
-                if parts and "text" in parts[0]:
-                    return {
-                        "status": "TERSAMBUNG",
-                        "keterangan": f"Berhasil terhubung ke Gemini API ({model_name}) via GEMINI_API_KEY.",
-                        "teks": parts[0]["text"].strip(),
-                    }
-        return {
-            "status": "RESPON_KOSONG",
-            "keterangan": f"Terhubung ke {model_name}, tetapi tidak ada teks jawaban yang dikembalikan.",
-            "teks": "Tidak ada respons teks dari Gemini; evaluasi statistik lokal tetap tersimpan.",
-        }
-    except Exception as exc:
-        return {
-            "status": "GAGAL_KONEKSI",
-            "keterangan": f"Gagal memanggil Gemini API ({exc}).",
-            "teks": f"Catatan: Gagal memanggil Gemini API ({exc}). Evaluasi statistik lokal tetap tersimpan.",
-        }
+    return {
+        "status": "GAGAL_KONEKSI",
+        "keterangan": f"Gagal memanggil Gemini API ({last_err or 'tidak ada model aktif'}).",
+        "teks": f"Catatan: Gagal memanggil Gemini API ({last_err}). Evaluasi statistik lokal tetap tersimpan.",
+    }
 
 
 def jalankan_evaluasi():
