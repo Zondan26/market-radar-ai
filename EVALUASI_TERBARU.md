@@ -1,13 +1,13 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-25 22:46:08 WIB
+- **Diperbarui:** 2026-11-25 22:59:46 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-3.5-transcribe) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
-- **Total Entry:** 120 | **Win Rate:** 63.33% | **Net P/L:** $-49.98 | **Puncak Profit:** $5.48 (Erosi: 1012.04%)
+- **Total Entry:** 121 | **Win Rate:** 63.64% | **Net P/L:** $-45.51 | **Puncak Profit:** $5.48 (Erosi: 930.47%)
 
 ## Perintah Aktif untuk MT5 (`strategy_command.json`)
 - **Mode:** `CAUTIOUS` | **Min Peluang:** `63%` | **Cut Profit:** `10.0% - 15.0%` | **Max Posisi (Lot 0.01):** `500`
 - **Aturan Saldo:** Jeda `60 menit` jika saldo turun `>=10.0%` dari saldo tertinggi, lalu lanjut entry otomatis
 - **Jarak Tambah ATR:** `0.35` | **Auto-Cut Goyah:** `AKTIF`
-- **Alasan Arahan:** Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #111 - #120: $-7.78, Net=$-49.98, RugiBesar=36): min peluang 63%, ATR 0.35.
+- **Alasan Arahan:** Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #111 - #120: $-7.78, Net=$-45.51, RugiBesar=36): min peluang 63%, ATR 0.35.
 
 ## Memori & Pembelajaran Kesalahan (`error_memory.json`)
 - **Evaluasi Ke-:** 1 | **Streak Evaluasi Rugi:** 1
@@ -18,13 +18,13 @@
 - Untung Kecil: 25
 - Rugi Kecil: 8
 - Rugi Besar: 36
-- Auto-Cut Untung (Chart/Berita Tidak Stabil): 23
+- Auto-Cut Untung (Chart/Berita Tidak Stabil): 24
 - Auto-Cut Rugi (Chart/Berita Tidak Stabil): 0
 
 ## Rata-Rata Jeda Waktu / Durasi Tahan
 - Entry ke TP: 13.19 menit
 - Entry ke SL: 7.93 menit
-- Entry ke Auto-Cut (Tanpa TP/SL): 2.92 menit
+- Entry ke Auto-Cut (Tanpa TP/SL): 2.9 menit
 
 ## Rekap Tiap 10 Kali Entry
 - **Entry #1 - #10:** RUGI ($-2.68) | 9W / 1L | Rata-rata durasi: 1.83 menit
@@ -39,5 +39,6 @@
 - **Entry #91 - #100:** UNTUNG ($3.74) | 6W / 4L | Rata-rata durasi: 6.42 menit
 - **Entry #101 - #110:** UNTUNG ($35.42) | 10W / 0L | Rata-rata durasi: 2.4 menit
 - **Entry #111 - #120:** RUGI ($-7.78) | 6W / 4L | Rata-rata durasi: 5.61 menit
+- **Entry #121 - #121:** UNTUNG ($4.47) | 1W / 0L | Rata-rata durasi: 1.5 menit
 
 ## Analisis Evaluasi AI
