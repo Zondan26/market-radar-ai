@@ -5,7 +5,7 @@ import subprocess
 import time
 
 # Ganti path ini sesuai lokasi folder MQL5\Files di MetaTrader 5 kamu
-MT5_CSV_PATH = r"C:\Users\NAMA_USER\AppData\Roaming\MetaQuotes\Terminal\ID_TERMINAL\MQL5\Files\trade_history.csv"
+MT5_CSV_PATH = r"MT5_CSV_PATH = r"C:\Users\Dani\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Files\trade_history.csv""
 
 REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_CSV_PATH = os.path.join(REPO_DIR, "trade_history.csv")
