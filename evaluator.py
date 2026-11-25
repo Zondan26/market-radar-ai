@@ -17,6 +17,8 @@ PROFIT_EROSION_TRIGGER_PCT = 30.0
 MIN_PEAK_PROFIT_FOR_30PCT = 5.00
 ADX_REM_TANGAN = 30.0
 ADX_NORMAL_LONGGAR = 35.0
+MAX_ENTRY_SAAT_ADX_TINGGI = 2
+TARGET_PROFIT_ADX_TINGGI_USD = 0.30
 
 
 def parse_float(val, default=0.0):
@@ -190,6 +192,8 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         "min_probabilitas": 60,
         "wajib_kompak_m15": True,
         "max_adx_entry": ADX_NORMAL_LONGGAR,
+        "adx_over_limit_max_entry": MAX_ENTRY_SAAT_ADX_TINGGI,
+        "adx_over_limit_profit_usd": TARGET_PROFIT_ADX_TINGGI_USD,
         "max_posisi": DEFAULT_MAX_POSISI,
         "jarak_tambah_atr": 0.25,
         "auto_cut_unstable": True,
@@ -205,7 +209,8 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["max_adx_entry"] = ADX_REM_TANGAN if info_erosi["rem_tangan_30pct_aktif"] else ADX_NORMAL_LONGGAR
         cmd["alasan_arahan"] = (
             f"Sampel baru {total} entry (belum genap 1 blok 10 entry): pertahankan batas peluang 60%, "
-            f"max_adx_entry={cmd['max_adx_entry']}, maksimal {DEFAULT_MAX_POSISI} posisi (lot 0.01)."
+            f"max_adx_entry={cmd['max_adx_entry']} (maks {MAX_ENTRY_SAAT_ADX_TINGGI} entry di atas ADX), "
+            f"maksimal {DEFAULT_MAX_POSISI} posisi (lot 0.01)."
         )
         return cmd
 
@@ -237,9 +242,8 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["max_posisi"] = 40 if rug_besar >= 8 else 60
         cmd["jarak_tambah_atr"] = 0.35 if rugi_pola_berat >= 3 else 0.30
         cmd["alasan_arahan"] = (
-            f"Rem tangan ADX>{int(cmd['max_adx_entry'])} aktif karena kerugian besar "
-            f"({acuan_blok['blok']}: ${acuan_blok['net_pnl_usd']}, Net=${stats['net_profit_usd']}, RugiBesar={rug_besar}): "
-            f"mode CAUTIOUS, min peluang {cmd['min_probabilitas']}%, max posisi {cmd['max_posisi']}, ATR {cmd['jarak_tambah_atr']}."
+            f"Rem tangan ADX>{int(cmd['max_adx_entry'])} (maks {MAX_ENTRY_SAAT_ADX_TINGGI} entry, target ${TARGET_PROFIT_ADX_TINGGI_USD}) "
+            f"aktif karena kerugian besar ({acuan_blok['blok']}: ${acuan_blok['net_pnl_usd']}, Net=${stats['net_profit_usd']}, RugiBesar={rug_besar})."
         )
     elif info_erosi["rem_tangan_30pct_aktif"]:
         cmd["mode_trading"] = "CAUTIOUS"
@@ -247,8 +251,8 @@ def susun_perintah_otomatis(stats, blok_10, memori, info_erosi, waktu_wib_str):
         cmd["max_posisi"] = 60
         cmd["jarak_tambah_atr"] = 0.30
         cmd["alasan_arahan"] = (
-            f"Rem tangan ADX>{int(cmd['max_adx_entry'])} aktif: profit terkikis {info_erosi['erosi_dari_puncak_pct']}% "
-            f"(${info_erosi['erosi_dari_puncak_usd']} dari puncak ${info_erosi['peak_profit_usd']}, Net=${stats['net_profit_usd']})."
+            f"Rem tangan ADX>{int(cmd['max_adx_entry'])} (maks {MAX_ENTRY_SAAT_ADX_TINGGI} entry, target ${TARGET_PROFIT_ADX_TINGGI_USD}) aktif: "
+            f"profit terkikis {info_erosi['erosi_dari_puncak_pct']}% (${info_erosi['erosi_dari_puncak_usd']} dari puncak ${info_erosi['peak_profit_usd']})."
         )
     elif win_rate >= 65.0 and rug_besar <= 2 and stats["net_profit_usd"] > 0:
         cmd["mode_trading"] = "ACTIVE"
@@ -519,6 +523,7 @@ def jalankan_evaluasi():
         "",
         "## Perintah Aktif untuk MT5 (`strategy_command.json`)",
         f"- **Mode:** `{perintah['mode_trading']}` | **Min Peluang:** `{perintah['min_probabilitas']}%` | **Max ADX Entry:** `{perintah['max_adx_entry']}` | **Max Posisi (Lot 0.01):** `{perintah['max_posisi']}`",
+        f"- **Aturan ADX Tinggi:** Maks `{perintah['adx_over_limit_max_entry']}` entry, target cut `${perintah['adx_over_limit_profit_usd']}`, lock jika 2x SL hingga ADX M5 & M15 < `{perintah['max_adx_entry']}`",
         f"- **Jarak Tambah ATR:** `{perintah['jarak_tambah_atr']}` | **Auto-Cut Goyah:** `{'AKTIF' if perintah['auto_cut_unstable'] else 'NONAKTIF'}`",
         f"- **Alasan Arahan:** {perintah['alasan_arahan']}",
         "",
