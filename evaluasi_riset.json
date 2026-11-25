@@ -1,52 +1,52 @@
 {
-  "updated_wib": "2026-11-25 22:34:02 WIB",
+  "updated_wib": "2026-11-25 22:36:41 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
     "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3.5-transcribe) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 117,
+    "total_trade": 118,
     "win_count": 74,
-    "loss_count": 43,
-    "win_rate_pct": 63.25,
-    "net_profit_usd": -45.2,
+    "loss_count": 44,
+    "win_rate_pct": 62.71,
+    "net_profit_usd": -59.31,
     "kategori": {
       "UNTUNG_BESAR": 28,
       "UNTUNG_KECIL": 25,
       "RUGI_KECIL": 8,
-      "RUGI_BESAR": 35,
+      "RUGI_BESAR": 36,
       "CUT_UNTUNG_TIDAK_STABIL": 21,
       "CUT_RUGI_TIDAK_STABIL": 0
     },
     "rata_durasi_menit": {
       "ke_tp": 13.19,
-      "ke_sl": 8.0,
+      "ke_sl": 7.93,
       "auto_cut_tanpa_tp_sl": 2.72
     }
   },
   "kondisi_profit_dan_erosi": {
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_usd": 50.68,
-    "erosi_dari_puncak_pct": 924.82,
+    "erosi_dari_puncak_usd": 64.79,
+    "erosi_dari_puncak_pct": 1182.3,
     "rem_tangan_30pct_aktif": true
   },
   "memori_kesalahan": {
     "total_evaluasi": 1,
     "streak_rugi_evaluasi": 1,
-    "total_trade_terakhir": 117,
-    "net_pnl_terakhir": -45.2,
+    "total_trade_terakhir": 118,
+    "net_pnl_terakhir": -59.31,
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_pct": 924.82,
+    "erosi_dari_puncak_pct": 1182.3,
     "pola_kesalahan": {
       "rugi_tahan_lama_ge_10_menit": 8,
-      "rugi_skor_tinggi_ge_75": 34,
+      "rugi_skor_tinggi_ge_75": 35,
       "rugi_cut_tidak_stabil": 0
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-25 22:34:02 WIB] Trade=117, Net=$-45.2 (Peak=$5.48, Erosi=924.82%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (34x)."
+      "[2026-11-25 22:36:41 WIB] Trade=118, Net=$-59.31 (Peak=$5.48, Erosi=1182.3%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (35x)."
     ],
-    "terakhir_update_wib": "2026-11-25 22:34:02 WIB"
+    "terakhir_update_wib": "2026-11-25 22:36:41 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -149,19 +149,19 @@
       "hasil_blok": "UNTUNG"
     },
     {
-      "blok": "Entry #111 - #117",
-      "jumlah_entry": 7,
+      "blok": "Entry #111 - #118",
+      "jumlah_entry": 8,
       "win": 4,
-      "loss": 3,
-      "net_pnl_usd": -3.0,
-      "rata_durasi_menit": 4.22,
+      "loss": 4,
+      "net_pnl_usd": -17.11,
+      "rata_durasi_menit": 4.37,
       "hasil_blok": "RUGI"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 22:34:02 WIB",
+    "updated_wib": "2026-11-25 22:36:41 WIB",
     "mode_trading": "CAUTIOUS",
-    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #101 - #110: $35.42, Net=$-45.2, RugiBesar=35): min peluang 63%, ATR 0.35.",
+    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #101 - #110: $35.42, Net=$-59.31, RugiBesar=36): min peluang 63%, ATR 0.35.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
     "cut_profit_min_pct": 10.0,
@@ -1813,6 +1813,20 @@
       "holding_minutes": 13.07,
       "exit_reason": "SL_HIT",
       "score_m5": 100,
+      "score_m15": 80,
+      "kategori": "RUGI_BESAR"
+    },
+    {
+      "entry_ke": 118,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": -14.11,
+      "balance_impact_pct": -0.28,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 326,
+      "holding_minutes": 5.43,
+      "exit_reason": "SL_HIT",
+      "score_m5": 80,
       "score_m15": 80,
       "kategori": "RUGI_BESAR"
     }
