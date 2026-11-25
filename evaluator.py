@@ -271,18 +271,20 @@ def panggil_gemini_evaluasi(ringkasan_data):
 
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
-        "Analisis riwayat trading serta memori kesalahan berikut secara objektif, bertahap, dan ringkas dalam bahasa Indonesia:\n"
-        "1. Evaluasi tiap entry: kenapa muncul UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL, "
-        "termasuk perbandingan rata-rata auto-cut profit terhadap rata-rata rugi SL.\n"
-        "2. Evaluasi jeda waktu (holding time) sampai TP, SL, atau auto-cut saat chart/berita tidak stabil.\n"
-        "3. Evaluasi hasil tiap blok 10 kali entry serta pola kesalahan berulang di error_memory (apakah membaik atau masih terulang).\n"
-        "4. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan bertahap berikutnya.\n\n"
+        "Tulis analisis singkat, padat, dan tuntas sampai selesai tanpa terpotong dalam bahasa Indonesia:\n"
+        "1. Evaluasi profit vs rugi (termasuk perbandingan rata-rata auto-cut profit dan rugi SL).\n"
+        "2. Evaluasi durasi tahan ke TP, SL, dan auto-cut.\n"
+        "3. Evaluasi blok 10 entry dan pola kesalahan di error_memory.\n"
+        "4. 2-3 saran penyetelan parameter konkret.\n\n"
         f"DATA EVALUASI:\n{json.dumps(ringkasan_data, ensure_ascii=False, indent=2)}"
     )
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2},
+        "generationConfig": {
+            "temperature": 0.2,
+            "maxOutputTokens": 2048,
+        },
     }
 
     last_err = ""
