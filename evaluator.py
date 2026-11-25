@@ -115,33 +115,42 @@ def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
 
 
 def cari_model_gemini_aktif(api_key):
-    kandidat_bawaan = [
+    kandidat = [
         ("v1beta", "models/gemini-2.5-flash"),
+        ("v1beta", "models/gemini-2.5-flash-lite"),
         ("v1beta", "models/gemini-2.0-flash"),
         ("v1beta", "models/gemini-flash-latest"),
     ]
+    daftar_nama = []
     list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
     try:
         req = request.Request(list_url, method="GET")
         with request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-            tersedia = []
             for m in data.get("models", []):
                 methods = m.get("supportedGenerationMethods", [])
                 name = m.get("name", "")
                 if "generateContent" in methods and name:
-                    tersedia.append(name)
-            for pref in ["models/gemini-2.5-flash", "models/gemini-2.0-flash", "models/gemini-flash-latest"]:
-                if pref in tersedia:
-                    return [("v1beta", pref)]
-            for name in tersedia:
-                if "flash" in name.lower():
-                    return [("v1beta", name)]
-            if tersedia:
-                return [("v1beta", tersedia[0])]
-    except Exception:
-        pass
-    return kandidat_bawaan
+                    daftar_nama.append(name)
+    except Exception as exc:
+        return kandidat, f"list_err={exc}"
+
+    prioritas = []
+    for p in [
+        "models/gemini-2.5-flash",
+        "models/gemini-2.5-flash-lite",
+        "models/gemini-2.0-flash",
+        "models/gemini-flash-latest",
+    ]:
+        if p in daftar_nama:
+            prioritas.append(("v1beta", p))
+
+    for name in daftar_nama:
+        if ("v1beta", name) not in prioritas:
+            prioritas.append(("v1beta", name))
+
+    info_list = ", ".join(daftar_nama[:6]) if daftar_nama else "kosong"
+    return (prioritas if prioritas else kandidat), f"models=[{info_list}]"
 
 
 def panggil_gemini_evaluasi(ringkasan_data):
@@ -152,6 +161,8 @@ def panggil_gemini_evaluasi(ringkasan_data):
             "keterangan": "GEMINI_API_KEY belum terbaca di environment GitHub Actions.",
             "teks": "API Key Gemini belum terpasang; evaluasi statistik lokal tetap tersimpan.",
         }
+
+    kandidat_list, info_model = cari_model_gemini_aktif(api_key)
 
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
@@ -169,7 +180,7 @@ def panggil_gemini_evaluasi(ringkasan_data):
     }
 
     last_err = ""
-    for api_ver, model_full in cari_model_gemini_aktif(api_key):
+    for api_ver, model_full in kandidat_list:
         url = (
             f"https://generativelanguage.googleapis.com/{api_ver}/"
             f"{model_full}:generateContent?key={api_key}"
@@ -189,16 +200,16 @@ def panggil_gemini_evaluasi(ringkasan_data):
                     if parts and "text" in parts[0]:
                         return {
                             "status": "TERSAMBUNG",
-                            "keterangan": f"Berhasil terhubung ke Gemini API ({model_full}) via GEMINI_API_KEY.",
+                            "keterangan": f"Berhasil terhubung ke Gemini API ({model_full}) | {info_model}.",
                             "teks": parts[0]["text"].strip(),
                         }
         except Exception as exc:
-            last_err = str(exc)
+            last_err = f"{model_full}: {exc}"
             continue
 
     return {
         "status": "GAGAL_KONEKSI",
-        "keterangan": f"Gagal memanggil Gemini API ({last_err or 'tidak ada model aktif'}).",
+        "keterangan": f"Gagal memanggil Gemini API ({last_err or 'tidak ada model aktif'}) | {info_model}.",
         "teks": f"Catatan: Gagal memanggil Gemini API ({last_err}). Evaluasi statistik lokal tetap tersimpan.",
     }
 
