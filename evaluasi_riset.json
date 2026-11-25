@@ -1,42 +1,42 @@
 {
-  "updated_wib": "2026-11-25 21:47:01 WIB",
+  "updated_wib": "2026-11-25 21:50:04 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
-    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
+    "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-3.5-transcribe) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
   },
   "statistik": {
-    "total_trade": 109,
-    "win_count": 69,
+    "total_trade": 110,
+    "win_count": 70,
     "loss_count": 40,
-    "win_rate_pct": 63.3,
-    "net_profit_usd": -46.82,
+    "win_rate_pct": 63.64,
+    "net_profit_usd": -42.2,
     "kategori": {
       "UNTUNG_BESAR": 28,
       "UNTUNG_KECIL": 25,
       "RUGI_KECIL": 8,
       "RUGI_BESAR": 32,
-      "CUT_UNTUNG_TIDAK_STABIL": 16,
+      "CUT_UNTUNG_TIDAK_STABIL": 17,
       "CUT_RUGI_TIDAK_STABIL": 0
     },
     "rata_durasi_menit": {
       "ke_tp": 13.19,
       "ke_sl": 7.99,
-      "auto_cut_tanpa_tp_sl": 2.82
+      "auto_cut_tanpa_tp_sl": 2.8
     }
   },
   "kondisi_profit_dan_erosi": {
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_usd": 52.3,
-    "erosi_dari_puncak_pct": 954.38,
+    "erosi_dari_puncak_usd": 47.68,
+    "erosi_dari_puncak_pct": 870.07,
     "rem_tangan_30pct_aktif": true
   },
   "memori_kesalahan": {
     "total_evaluasi": 1,
     "streak_rugi_evaluasi": 1,
-    "total_trade_terakhir": 109,
-    "net_pnl_terakhir": -46.82,
+    "total_trade_terakhir": 110,
+    "net_pnl_terakhir": -42.2,
     "peak_profit_usd": 5.48,
-    "erosi_dari_puncak_pct": 954.38,
+    "erosi_dari_puncak_pct": 870.07,
     "pola_kesalahan": {
       "rugi_tahan_lama_ge_10_menit": 7,
       "rugi_skor_tinggi_ge_75": 31,
@@ -44,9 +44,9 @@
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-25 21:47:01 WIB] Trade=109, Net=$-46.82 (Peak=$5.48, Erosi=954.38%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (31x)."
+      "[2026-11-25 21:50:04 WIB] Trade=110, Net=$-42.2 (Peak=$5.48, Erosi=870.07%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (31x)."
     ],
-    "terakhir_update_wib": "2026-11-25 21:47:01 WIB"
+    "terakhir_update_wib": "2026-11-25 21:50:04 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -140,19 +140,19 @@
       "hasil_blok": "UNTUNG"
     },
     {
-      "blok": "Entry #101 - #109",
-      "jumlah_entry": 9,
-      "win": 9,
+      "blok": "Entry #101 - #110",
+      "jumlah_entry": 10,
+      "win": 10,
       "loss": 0,
-      "net_pnl_usd": 30.8,
-      "rata_durasi_menit": 2.52,
+      "net_pnl_usd": 35.42,
+      "rata_durasi_menit": 2.4,
       "hasil_blok": "UNTUNG"
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-25 21:47:01 WIB",
+    "updated_wib": "2026-11-25 21:50:04 WIB",
     "mode_trading": "CAUTIOUS",
-    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #91 - #100: $3.74, Net=$-46.82, RugiBesar=32): min peluang 63%, ATR 0.35.",
+    "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #101 - #110: $35.42, Net=$-42.2, RugiBesar=32): min peluang 63%, ATR 0.35.",
     "min_probabilitas": 63,
     "wajib_kompak_m15": true,
     "cut_profit_min_pct": 10.0,
@@ -1694,7 +1694,21 @@
       "score_m5": 80,
       "score_m15": 80,
       "kategori": "CUT_UNTUNG_TIDAK_STABIL"
+    },
+    {
+      "entry_ke": 110,
+      "symbol": "XAUUSD",
+      "direction": "SELL",
+      "profit_usd": 4.62,
+      "balance_impact_pct": 0.09,
+      "priority_flag": "NORMAL",
+      "holding_seconds": 80,
+      "holding_minutes": 1.33,
+      "exit_reason": "PROFIT_CUT_10_15_PCT",
+      "score_m5": 80,
+      "score_m15": 80,
+      "kategori": "CUT_UNTUNG_TIDAK_STABIL"
     }
   ],
-  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis secara singkat, padat, dan tuntas:\n\n### 1. Evaluasi Profit vs Rugi\n* **Kinerja Keseluruhan:** Meskipun *win rate* tergolong baik di angka **63.3%** (69 win / 40 loss), total net PnL masih bernilai negatif **-$46.82**. \n* **Puncak Profit & Erosi:** *Peak profit* tercatat sangat rendah di **$5.48**, namun mengalami erosi masif sebesar **954.38%** (-$52.3) akibat besarnya nominal *loss* per posisi.\n* **Auto-Cut vs SL:** Mekanisme *auto-cut* efektif mengamankan profit kecil secara cepat, namun tidak sebanding dengan kerugian dari *Stop Loss* (SL Hit) dan kategori `RUGI_BESAR` (tercatat 32 kejadian) yang menggerus akumulasi kemenangan.\n\n### 2. Evaluasi Durasi Tahan (Holding Time)\n* **Ke TP (Rata-rata 13.19 menit):** Durasi menuju *Take Profit* relatif ideal untuk menangkap momentum tren pendek di M5+M15.\n* **Ke SL (Rata-rata 7.99 menit):** Waktu tahan saat salah arah cukup cepat, namun ukuran risiko (*lot/distance*) tampaknya terlalu berat terhadap margin profit.\n* **Auto-Cut Tanpa TP/SL (Rata-rata 2.82 menit):** Sangat efisien dan responsif dalam memotong posisi yang tidak stabil atau menghindari pembalikan arah mendadak.\n\n### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (`error_memory`)\n* **Performa Blok:** Terjadi performa yang tidak konsisten. Blok awal hingga tengah (`#11` s.d. `#90`) didominasi hasil **RUGI** akibat tekanan *drawdown* yang dalam. Namun, sistem menunjukkan pemulihan signifikan pada blok akhir (`#91` s.d. `#109`), khususnya pada blok `#101 - #109` yang sukses mencetak *win rate* 100% ($+$30.8 USD).\n* **Pola Kesalahan:** *Error memory* mendeteksi masalah utama pada kategori `rugi_skor_tinggi_ge_75` (terjadi 31 kali). Artinya, sistem sering masuk posisi dengan keyakinan skor tinggi (>75) namun tetap terkena SL, mengindikasikan adanya *false signal* saat volatilitas tinggi di XAUUSD.\n\n### 4. Saran Penyetelan Parameter Konkret\n1. **Perketat Filter Skor & Konfirmasi M15:** Naikkan batas minimum probabilitas/skor dari 63 menjadi minimal **70-75**, serta pastikan `wajib_kompak_m15` benar-benar memfilter arah tren secara ketat untuk meredam kasus `rugi_skor_tinggi_ge_75`.\n2. **Optimalisasi Risk-to-Reward Ratio (RRR):** Sesuaikan jarak SL atau percepat *trailing stop* karena saat ini 1 kali *loss* besar mampu memakan hasil 4-5 kali *win* kecil.\n3. **Pertahankan Mode Cautious & Jeda Saldo:** Pertahankan aturan *pause* otomatis saat saldo turun $\\ge 10\\%$ untuk memutus *losing streak* psikologis dan teknis seperti yang terbukti sukses membalikkan performa di blok akhir."
+  "ai_analisis": ""
 }

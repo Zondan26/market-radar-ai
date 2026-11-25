@@ -1,7 +1,7 @@
 {
-  "updated_wib": "2026-11-25 21:47:01 WIB",
+  "updated_wib": "2026-11-25 21:50:04 WIB",
   "mode_trading": "CAUTIOUS",
-  "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #91 - #100: $3.74, Net=$-46.82, RugiBesar=32): min peluang 63%, ATR 0.35.",
+  "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #101 - #110: $35.42, Net=$-42.2, RugiBesar=32): min peluang 63%, ATR 0.35.",
   "min_probabilitas": 63,
   "wajib_kompak_m15": true,
   "cut_profit_min_pct": 10.0,
