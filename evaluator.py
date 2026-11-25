@@ -21,6 +21,13 @@ def parse_float(val, default=0.0):
         return default
 
 
+def parse_int(val, default=0):
+    try:
+        return int(float(val))
+    except (TypeError, ValueError):
+        return default
+
+
 def klasifikasi_hasil(profit_usd, exit_reason):
     if exit_reason == "UNSTABLE_PROFIT_GRAB":
         return "CUT_UNTUNG_TIDAK_STABIL" if profit_usd >= 0 else "CUT_RUGI_TIDAK_STABIL"
@@ -68,7 +75,8 @@ def susun_perintah_otomatis(stats, blok_10, waktu_wib_str):
         "min_untung_cut_usd": 0.10,
         "smart_early_tp": True,
         "min_rasio_early_tp": 0.50,
-        "max_sl_harian": 10,
+        "max_sl_harian": 1000,
+        "max_rugi_saldo_persen": 60.0,
     }
 
     total = stats["total_trade"]
@@ -167,9 +175,10 @@ def panggil_gemini_evaluasi(ringkasan_data):
     prompt = (
         "Kamu adalah analis evaluasi riset scalping otomatis (lot 0.01, M5+M15, XAUUSD & EURUSD). "
         "Analisis riwayat trading berikut secara objektif dan ringkas dalam bahasa Indonesia:\n"
-        "1. Evaluasi tiap entry: kenapa muncul UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL.\n"
+        "1. Evaluasi tiap entry: kenapa muncul UNTUNG BESAR / UNTUNG KECIL dan RUGI BESAR / RUGI KECIL, "
+        "termasuk perbandingan rata-rata auto-cut profit terhadap rata-rata rugi SL.\n"
         "2. Evaluasi jeda waktu (holding time) sampai TP, SL, atau auto-cut saat chart/berita tidak stabil.\n"
-        "3. Evaluasi hasil tiap blok 10 kali entry (untung/rugi) serta risiko penumpukan saat entry rapat.\n"
+        "3. Evaluasi hasil tiap blok 10 kali entry (untung/rugi) serta skor M5/M15 & ADX saat entry.\n"
         "4. Berikan 2-3 saran penyetelan parameter konkret untuk perbaikan berikutnya.\n\n"
         f"DATA EVALUASI:\n{json.dumps(ringkasan_data, ensure_ascii=False, indent=2)}"
     )
@@ -218,8 +227,13 @@ def jalankan_evaluasi():
     rows = []
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, mode="r", encoding="utf-8-sig", newline="") as f:
-            reader = csv.DictReader(f)
+            sample = f.read(2048)
+            f.seek(0)
+            delimiter = ";" if sample.count(";") > sample.count(",") else ","
+            reader = csv.DictReader(f, delimiter=delimiter)
             for r in reader:
+                if not r or not any((v or "").strip() for v in r.values()):
+                    continue
                 rows.append(r)
 
     stats = {
@@ -248,11 +262,16 @@ def jalankan_evaluasi():
 
     for idx_row, r in enumerate(rows, start=1):
         profit = parse_float(r.get("profit_usd", 0.0))
+        impact_pct = parse_float(r.get("balance_impact_pct", 0.0))
         durasi_detik = parse_float(r.get("holding_seconds", 0.0))
         durasi_menit = round(durasi_detik / 60.0, 2)
         exit_reason = (r.get("exit_reason") or "UNKNOWN").strip().upper()
         symbol = (r.get("symbol") or "").strip()
         direction = (r.get("direction") or "").strip()
+        score_m5 = parse_int(r.get("score_m5", 0))
+        score_m15 = parse_int(r.get("score_m15", 0))
+        adx_m5 = parse_float(r.get("adx_m5", 0.0))
+        priority_flag = (r.get("priority_flag") or "NORMAL").strip()
 
         stats["net_profit_usd"] = round(stats["net_profit_usd"] + profit, 2)
         if profit > 0:
@@ -276,9 +295,14 @@ def jalankan_evaluasi():
             "symbol": symbol,
             "direction": direction,
             "profit_usd": profit,
+            "balance_impact_pct": impact_pct,
+            "priority_flag": priority_flag,
             "holding_seconds": int(durasi_detik),
             "holding_minutes": durasi_menit,
             "exit_reason": exit_reason,
+            "score_m5": score_m5,
+            "score_m15": score_m15,
+            "adx_m5": adx_m5,
             "kategori": kat,
         })
 
