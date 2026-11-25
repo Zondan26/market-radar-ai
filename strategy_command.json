@@ -1,7 +1,7 @@
 {
-  "updated_wib": "2026-11-25 15:23:34 WIB",
+  "updated_wib": "2026-11-25 15:30:08 WIB",
   "mode_trading": "CAUTIOUS",
-  "alasan_arahan": "Rem tangan ADX>30 (maks 2 entry, target $0.3) aktif karena kerugian besar (Entry #61 - #70: $-26.55, Net=$-53.26, RugiBesar=24).",
+  "alasan_arahan": "Rem tangan ADX>30 (maks 2 entry, target $0.3) aktif karena kerugian besar (Entry #61 - #70: $-26.55, Net=$-59.51, RugiBesar=25).",
   "min_probabilitas": 63,
   "wajib_kompak_m15": true,
   "max_adx_entry": 30.0,
