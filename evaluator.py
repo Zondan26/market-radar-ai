@@ -186,12 +186,11 @@ def susun_perintah_otomatis(stats, blok_10, memori, waktu_wib_str):
     blok_genap = [b for b in blok_10 if b["jumlah_entry"] == 10]
     acuan_blok = blok_genap[-1] if blok_genap else blok_10[-1]
 
-    # Jika kerugian masih terakumulasi atau pola kesalahan berulang, tahan di CAUTIOUS bertahap
     if stats["net_profit_usd"] < 0 or (acuan_blok["net_pnl_usd"] < 0 and acuan_blok["loss"] >= 6):
         penalti_step = min(8, max(3, streak_rugi + (2 if rugi_pola_berat >= 4 else 0)))
         cmd["mode_trading"] = "CAUTIOUS"
         cmd["min_probabilitas"] = 60 + penalti_step
-        cmd["max_posisi"] = 40 if rugi_besar >= 8 else 60
+        cmd["max_posisi"] = 40 if rug_besar >= 8 else 60
         cmd["jarak_tambah_atr"] = 0.35 if rugi_pola_berat >= 3 else 0.30
         cmd["alasan_arahan"] = (
             f"Belajar dari kesalahan ({acuan_blok['blok']}: ${acuan_blok['net_pnl_usd']}, Net=${stats['net_profit_usd']}, "
