@@ -1,5 +1,9 @@
 {
-  "updated_at": "2026-11-25 01:23 UTC",
+  "updated_wib": "2026-11-25 09:14:48 WIB",
+  "koneksi_gemini": {
+    "status": "GAGAL_KONEKSI",
+    "keterangan": "Gagal memanggil Gemini API (HTTP Error 404: Not Found)."
+  },
   "statistik": {
     "total_trade": 0,
     "win_count": 0,
@@ -20,5 +24,21 @@
       "auto_cut_tanpa_tp_sl": 0.0
     }
   },
+  "evaluasi_tiap_10_entry": [],
+  "perintah_aktif": {
+    "updated_wib": "2026-11-25 09:14:48 WIB",
+    "mode_trading": "ACTIVE",
+    "alasan_arahan": "Sampel baru 0 entry (belum genap 1 blok 10 entry): pertahankan batas peluang 60%, maksimal 100 posisi (lot 0.01), dan auto-cut saat chart/berita tidak stabil.",
+    "min_probabilitas": 60,
+    "wajib_kompak_m15": true,
+    "max_posisi": 100,
+    "jarak_tambah_atr": 0.25,
+    "auto_cut_unstable": true,
+    "min_untung_cut_usd": 0.1,
+    "smart_early_tp": true,
+    "min_rasio_early_tp": 0.5,
+    "max_sl_harian": 10
+  },
+  "evaluasi_tiap_entry": [],
   "ai_analisis": "Catatan: Gagal memanggil Gemini API (HTTP Error 404: Not Found). Evaluasi statistik lokal tetap tersimpan."
 }
