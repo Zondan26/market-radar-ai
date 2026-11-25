@@ -1,0 +1,39 @@
+name: Evaluasi Riset AI
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  push:
+    paths:
+      - "trade_history.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  evaluasi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositori
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Jalankan evaluator.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python evaluator.py
+
+      - name: Commit hasil evaluasi ke GitHub
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add evaluasi_riset.json EVALUASI_TERBARU.md
+          if ! git diff --staged --quiet; then
+            git commit -m "Update laporan evaluasi riset AI"
+            git push
+          fi
