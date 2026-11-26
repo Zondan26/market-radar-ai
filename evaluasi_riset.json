@@ -1,5 +1,5 @@
 {
-  "updated_wib": "2026-11-26 19:22:05 WIB",
+  "updated_wib": "2026-11-27 03:43:33 WIB",
   "koneksi_gemini": {
     "status": "TERSAMBUNG",
     "keterangan": "Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it]."
@@ -44,9 +44,9 @@
     },
     "catatan_pembelajaran": [
       "Sistem memori kesalahan diinisialisasi; akan mencatat pola rugi berulang dari tiap evaluasi.",
-      "[2026-11-26 19:22:05 WIB] Trade=123, Net=$-74.42 (Peak=$5.48, Erosi=1458.03%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (37x)."
+      "[2026-11-27 03:43:33 WIB] Trade=123, Net=$-74.42 (Peak=$5.48, Erosi=1458.03%), StreakRugi=1, PolaRugiTerbanyak=rugi_skor_tinggi_ge_75 (37x)."
     ],
-    "terakhir_update_wib": "2026-11-26 19:22:05 WIB"
+    "terakhir_update_wib": "2026-11-27 03:43:33 WIB"
   },
   "evaluasi_tiap_10_entry": [
     {
@@ -168,7 +168,7 @@
     }
   ],
   "perintah_aktif": {
-    "updated_wib": "2026-11-26 19:22:05 WIB",
+    "updated_wib": "2026-11-27 03:43:33 WIB",
     "mode_trading": "CAUTIOUS",
     "alasan_arahan": "Cut profit 10%-15% | Entry terbuka selama sinyal candle memenuhi | Jeda 1 jam bila saldo turun >=10% puncak | Mode CAUTIOUS (Entry #111 - #120: $-7.78, Net=$-74.42, RugiBesar=38): min peluang 63%, ATR 0.35.",
     "min_probabilitas": 63,
@@ -1910,5 +1910,5 @@
       "kategori": "RUGI_BESAR"
     }
   ],
-  "ai_analisis": "Berikut adalah analisis singkat, padat, dan tuntas berdasarkan data evaluasi riset scalping otomatis:\n\n### 1. Evaluasi Profit vs Rugi\n* **Kinerja Keseluruhan:** Meskipun tingkat kemenangan (*win rate*) tergolong baik di angka **62.6%** (77 WIN dari 123 trade), performa bersih secara"
+  "ai_analisis": "Berikut adalah analisis evaluasi riset scalping otomatis berdasarkan data yang tersedia:\n\n**1. Evaluasi Profit vs Rugi**\n* **Performa Keseluruhan:** Meskipun *Win Rate* cukup tinggi di angka 62.6% (77 WIN dari 123 trade), total Net PnL masih bernilai negatif sebesar -$74.42. \n* **Puncak & Erosi Profit:** *Peak Profit* tercatat pada angka $5.48, namun mengalami erosi yang sangat masif sebesar 1,458.03% (-$79.9) akibat akumulasi kerugian besar.\n* **Auto-Cut vs SL:** Kategori `RUGI_BESAR` mendominasi dengan 38 kejadian, jauh melampaui `RUGI_KECIL` (8 kejadian). Hal ini menunjukkan bahwa sistem *Stop Loss* (SL) kurang efektif menahan risiko dibandingkan mekanisme *Auto-Cut* profit (tercatat 24 kali *cut* profit tidak stabil), di mana besar kerugian per trade individual (-$11 hingga -$14) menggerus hasil dari banyak trade WIN kecil.\n\n**2. Evaluasi Durasi Tahan**\n* **Ke TP:** Rata-rata durasi mencapai target profit adalah 13.19 menit.\n* **Ke SL:** Rata-rata durasi terkena *Stop Loss* adalah 9.38 menit, dengan beberapa trade terakhir (seperti entry #122-#123) bahkan tertahan hingga 35 menit sebelum kena SL. Durasi ini terlalu lama untuk gaya scalping.\n* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi yang sangat cepat (2.9 menit) menunjukkan efektivitas sistem dalam mengamankan posisi cepat saat kondisi pasar berbalik.\n\n**3. Evaluasi Blok 10 Entry & Pola Kesalahan**\n* **Blok Entry:** Performa sangat fluktuatif. Blok awal (#31-#50) sangat produktif, namun performa merosot tajam pada blok #61-#70 (-$26.55) dan memburuk secara signifikan pada akhir sesi (#121-#123 dengan net -$24.44 dari 3 entry saja).\n* **Pola Kesalahan (*Error Memory*):** Dominasi terbesar ada pada kategori `rugi_skor_tinggi_ge_75` (37 kejadian) dan `rugi_tahan_lama_ge_10_menit` (10 kejadian). Ini mengindikasikan bahwa skor sinyal tinggi (di atas 75) tidak menjamin ke akuratan jika durasi tahan dibiarkan terlalu lama (>10 menit) di instrumen XAUUSD.\n\n**4. Saran Penyetelan Parameter Konkret**\n1. **Perketat Time-Based Stop Loss (Max Holding Time):** Batasi maksimal durasi tahan posisi scalping hingga 5-7 menit saja. Jika dalam waktu tersebut posisi belum mencapai TP atau *auto-cut*, paksa sistem untuk menutup posisi guna menghindari lonjakan kerugian seperti pada entry #122 dan #123 (tertolak di 35 menit).\n2. **Revisi Rasio Risiko/Reward (Risk-to-Reward Ratio):** Besaran kerugian per *SL Hit* (-$11 s.d. -$14) terlampau besar dibandingkan rata-rata profit hasil *Auto-Cut* atau TP. Perketat jarak SL atau naikkan ambang batas *min_probabilitas* (dari 63% menjadi minimal 70%) untuk menyaring sinyal palsu ber-skor tinggi.\n3. **Optimasi Algoritma Cut Profit & Jeda:** Pertahankan mode `CAUTIOUS` dengan mempercepat aktivasi jeda 1 jam (`balance_drop_pause_pct`) jika terjadi *drawdown* beruntun pada rentang 5 entry terakhir, guna memutus rantai *streak rugi*."
 }
