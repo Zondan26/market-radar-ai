@@ -1,5 +1,5 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-27 19:53:44 WIB
+- **Diperbarui:** 2026-11-28 04:44:45 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
 - **Total Entry:** 123 | **Win Rate:** 62.6% | **Net P/L:** $-74.42 | **Puncak Profit:** $5.48 (Erosi: 1458.03%)
 
@@ -42,23 +42,23 @@
 - **Entry #121 - #123:** RUGI ($-24.44) | 1W / 2L | Rata-rata durasi: 24.14 menit
 
 ## Analisis Evaluasi AI
-Berikut adalah analisis singkat, padat, dan tuntas berdasarkan data evaluasi riset scalping otomatis:
+Berikut adalah analisis evaluasi riset scalping otomatis berdasarkan data yang diberikan:
 
 ### 1. Evaluasi Profit vs Rugi
-* **Kinerja Keseluruhan:** Meskipun tingkat kemenangan (*win rate*) cukup baik di angka **62.6%** (77 WIN / 46 LOSS), sistem mencatatkan net profit negatif **-$74.42**. Hal ini disebabkan oleh dominasi kategori `RUGI_BESAR` (38 trade) yang menggerus hasil dari 28 `UNTUNG_BESAR` dan 25 `UNTUNG_KECIL`.
-* **Puncak Profit & Erosi:** Puncak profit (*peak profit*) tercatat sebesar **$5.48**, namun mengalami erosi masif sebesar **$79.9** atau setara dengan **1458.03%**. Rem tangan 30% aktif menunjukkan sistem gagal mengamankan profit sebelum berbalik arah.
-* **Auto-Cut vs SL:** Mekanisme auto-cut (*basket/profit cut*) efektif mengamankan profit kecil secara cepat (tercatat 24 trade `CUT_UNTUNG_TIDAK_STABIL`), namun ketika posisi salah arah, *Stop Loss* (SL) memakan porsi kerugian yang terlalu besar per eksekusi dibandingkan rata-rata profit yang dikumpulkan.
+* **Performa Keseluruhan:** Meskipun tingkat kemenangan (*Win Rate*) cukup baik di angka **62.6%** (77 Win vs 46 Loss), net profit keseluruhan masih bernilai negatif **-$74.42**. Hal ini menunjukkan asimetri risiko di mana ukuran kerugian (*Rugi Besar* sebanyak 38 trade) jauh menggerus akumulasi kemenangan kecil.
+* **Puncak Profit & Erosi:** *Peak profit* tercatat sebesar **$5.48**, namun mengalami erosi yang sangat ekstrem sebesar **1,458.03%** (-$79.9), memicu aktifnya *rem tangan 30%*.
+* **Auto-Cut vs SL:** Mekanisme *auto-cut* berhasil mengamankan profit melalui skema seperti `PROFIT_CUT_10_15_PCT`, namun sistem gagal membatasi kerugian secara dini sebelum menyentuh Stop Loss (`SL_HIT`), menghasilkan kerugian per trade yang relatif besar (mencapai -$14.54).
 
 ### 2. Evaluasi Durasi Tahan (Holding Time)
-* **Ke TP (Take Profit):** Rata-rata durasi **13.19 menit**, menunjukkan TP tercapai secara wajar untuk gaya scalping M5+M15.
-* **Ke SL (Stop Loss):** Rata-rata durasi **9.38 menit**. Durasi ini relatif terlalu lama untuk ukuran scalping, mengindikasikan adanya indikasi *hope trading* (menahan posisi rugi terlalu lama berharap harga berbalik).
-* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi sangat cepat yaitu **2.9 menit**, membuktikan bahwa algoritma pemotong otomatis berfungsi agresif pada fase awal entry.
+* **Ke TP:** Rata-rata durasi mencapai TP adalah **13.19 menit**, menunjukkan posisi yang menang membutuhkan waktu lebih lama untuk matang.
+* **Ke SL:** Rata-rata durasi ke SL adalah **9.38 menit**, yang mengindikasikan bahwa posisi yang salah cenderung bertahan terlalu lama di pasar alih-alih terpotong lebih awal (terkonfirmasi pada memori kesalahan: 10 kasus rugi tahan lama $\ge$ 10 menit).
+* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi sangat cepat yaitu **2.9 menit**, efektif mengamankan posisi saat kondisi tidak stabil terdeteksi.
 
 ### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (`error_memory`)
-* **Blok 10 Entry:** Performa sangat fluktuatif. Blok awal hingga tengah sempat sangat produktif (contoh: Entry #101-#110 net profit +$35.42), namun memburuk drastis pada blok akhir (Entry #121-#123 mencatatkan net -$24.44 dengan durasi bengkak hingga 24+ menit).
-* **Pola Kesalahan:** Memori kesalahan mencatat **37 kasus** pada kategori `rugi_skor_tinggi_ge_75` dan 10 kasus `rugi_tahan_lama_ge_10_menit`. Ironisnya, entry dengan skor teknikal tinggi (M5/M15 di atas 75-80) justru kerap berujung pada kerugian besar, menandakan sinyal indikator rentan terhadap *fake breakout* di instrumen XAUUSD.
+* **Performa Per Blok:** Performa sangat fluktuatif. Blok awal hingga tengah (seperti #31-#50 dan #101-#110) sangat impresif dengan profit bersih yang baik dan win rate tinggi. Namun, tren memburuk drastis pada blok-blok akhir (khususnya #61-#70 dan #121-#123) akibat lonjakan *SL_HIT*.
+* **Pola Kesalahan:** Berdasarkan `error_memory`, masalah utama terkonsentrasi pada **`rugi_skor_tinggi_ge_75` (37 kejadian)**. Artinya, sinyal dengan skor probabilitas tinggi (>75) kerap memberikan hasil *falsely confident* yang berujung pada kerugian besar, ditambah masalah durasi tahan posisi rugi yang lewat dari batas ideal.
 
 ### 4. Saran Penyetelan Parameter Konkret
-1. **Perketat Filter Sinyal (Min Probabilitas & Skor):** Naikkan ambang batas `min_probabilitas` dari 63% menjadi minimal **70%-75%** dan wajibkan konfirmasi tren kuat pada M15 untuk mengurangi frekuensi `rugi_skor_tinggi`.
-2. **Perpendek Batas Waktu Tahan Rugi (Max Holding Time / Time-based SL):** Terapkan aturan *time-based stop* maksimal 5 menit untuk scalping. Jika dalam 5 menit posisi tidak bergerak sesuai arah, lakukan *forced cut loss* guna memangkas durasi tahan rugi yang saat ini mencapai rata-rata 9+ menit.
-3. **Optimasi Jarak ATR & Rasio Risk-to-Reward:** Sesuaikan `jarak_tambah_atr` dan perkecil level *Stop Loss* absolut atau aktifkan *Trailing Stop* yang lebih agresif untuk mencegah erosi profit ekstrem (1458%) terulang kembali.
+1. **Perketat Sinyal Skor Tinggi & Filter Tren:** Evaluasi ulang formula skor M5 dan M15 karena skor $\ge 75$ masih menghasilkan banyak *false signal*. Wajibkan konfirmasi arah tren yang lebih ketat sebelum eksekusi untuk menekan 37 kasus rugi skor tinggi.
+2. **Percepat Cut Loss / Time-Based Stop:** Batasi maksimal durasi tahan posisi rugi (misalnya maksimal 5 menit). Jika posisi belum bergerak sesuai arah dalam waktu tersebut, paksakan *auto-cut* untuk menghindari kerugian besar ($>$ -$10) seperti yang terjadi pada entry #122 dan #123.
+3. **Optimasi Jarak ATR & Rasio Risk/Reward:** Sesuaikan `jarak_tambah_atr` (saat ini 0.35) atau perketat *Trailing Stop* / *Hard SL* agar ukuran kekalahan (*Rugi Besar*) tidak lebih besar daripada rata-rata *Untung Besar* yang bisa diraih.
