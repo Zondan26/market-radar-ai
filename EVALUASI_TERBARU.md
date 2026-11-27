@@ -1,5 +1,5 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-27 03:43:33 WIB
+- **Diperbarui:** 2026-11-27 10:23:31 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
 - **Total Entry:** 123 | **Win Rate:** 62.6% | **Net P/L:** $-74.42 | **Puncak Profit:** $5.48 (Erosi: 1458.03%)
 
@@ -45,20 +45,20 @@
 Berikut adalah analisis evaluasi riset scalping otomatis berdasarkan data yang tersedia:
 
 **1. Evaluasi Profit vs Rugi**
-* **Performa Keseluruhan:** Meskipun *Win Rate* cukup tinggi di angka 62.6% (77 WIN dari 123 trade), total Net PnL masih bernilai negatif sebesar -$74.42. 
-* **Puncak & Erosi Profit:** *Peak Profit* tercatat pada angka $5.48, namun mengalami erosi yang sangat masif sebesar 1,458.03% (-$79.9) akibat akumulasi kerugian besar.
-* **Auto-Cut vs SL:** Kategori `RUGI_BESAR` mendominasi dengan 38 kejadian, jauh melampaui `RUGI_KECIL` (8 kejadian). Hal ini menunjukkan bahwa sistem *Stop Loss* (SL) kurang efektif menahan risiko dibandingkan mekanisme *Auto-Cut* profit (tercatat 24 kali *cut* profit tidak stabil), di mana besar kerugian per trade individual (-$11 hingga -$14) menggerus hasil dari banyak trade WIN kecil.
+*   **Performa Keseluruhan:** Meskipun *Win Rate* cukup tinggi di angka 62.6% (77 WIN vs 46 LOSS), sistem mencatatkan *Net Profit* negatif sebesar -$74.42. 
+*   **Puncak Profit & Erosi:** Puncak profit (*peak profit*) tercatat di angka $5.48, namun mengalami erosi yang sangat ekstrem sebesar $79.9 atau setara dengan **1458.03%**. Hal ini memicu fungsi pengaman (*rem tangan*) 30% aktif.
+*   **Auto-Cut vs SL:** Sistem terlalu sering melakukan *auto-cut* profit kecil (kategori *CUT_UNTUNG_TIDAK_STABIL* sebanyak 24 kali), yang nilainya langsung tergerus telak oleh ukuran kekalahan saat *Stop Loss* (SL) tersentuh (tercatat 38 kali *RUGI_BESAR*). 
 
 **2. Evaluasi Durasi Tahan**
-* **Ke TP:** Rata-rata durasi mencapai target profit adalah 13.19 menit.
-* **Ke SL:** Rata-rata durasi terkena *Stop Loss* adalah 9.38 menit, dengan beberapa trade terakhir (seperti entry #122-#123) bahkan tertahan hingga 35 menit sebelum kena SL. Durasi ini terlalu lama untuk gaya scalping.
-* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi yang sangat cepat (2.9 menit) menunjukkan efektivitas sistem dalam mengamankan posisi cepat saat kondisi pasar berbalik.
+*   **Ke TP (Take Profit):** Rata-rata durasi 13.19 menit, menunjukkan sistem cukup sabar saat tren searah target.
+*   **Ke SL (Stop Loss):** Rata-rata durasi 9.38 menit. Durasi ini terlalu lama untuk ukuran scalping, mengindikasikan posisi rugi dibiarkan terlalu lama berharap berbalik arah sebelum akhirnya kena SL yang dalam.
+*   **Auto-Cut:** Rata-rata durasi sangat cepat yaitu 2.9 menit, menunjukkan respons keluar cepat saat kondisi tidak stabil.
 
 **3. Evaluasi Blok 10 Entry & Pola Kesalahan**
-* **Blok Entry:** Performa sangat fluktuatif. Blok awal (#31-#50) sangat produktif, namun performa merosot tajam pada blok #61-#70 (-$26.55) dan memburuk secara signifikan pada akhir sesi (#121-#123 dengan net -$24.44 dari 3 entry saja).
-* **Pola Kesalahan (*Error Memory*):** Dominasi terbesar ada pada kategori `rugi_skor_tinggi_ge_75` (37 kejadian) dan `rugi_tahan_lama_ge_10_menit` (10 kejadian). Ini mengindikasikan bahwa skor sinyal tinggi (di atas 75) tidak menjamin ke akuratan jika durasi tahan dibiarkan terlalu lama (>10 menit) di instrumen XAUUSD.
+*   **Blok 10 Entry:** Performa sangat tidak konsisten. Blok awal hingga tengah sempat stabil (misal: Entry #31-#50 untung), namun memburuk drastis pada blok akhir (#61-#90 dan #111-#123) dengan dominasi blok rugi dan penutupan trade terakhir (#121-#123) yang minus -$24.44.
+*   **Pola Kesalahan (*Error Memory*):** Dominasi kesalahan terbesar berada pada kategori `rugi_skor_tinggi_ge_75` (37 kejadian) dan `rugi_tahan_lama_ge_10_menit` (10 kejadian). Ini membuktikan bahwa skor sinyal tinggi (di atas 75) tidak menjamin kemenangan jika volatilitas XAUUSD melawan arah posisi *SELL*.
 
 **4. Saran Penyetelan Parameter Konkret**
-1. **Perketat Time-Based Stop Loss (Max Holding Time):** Batasi maksimal durasi tahan posisi scalping hingga 5-7 menit saja. Jika dalam waktu tersebut posisi belum mencapai TP atau *auto-cut*, paksa sistem untuk menutup posisi guna menghindari lonjakan kerugian seperti pada entry #122 dan #123 (tertolak di 35 menit).
-2. **Revisi Rasio Risiko/Reward (Risk-to-Reward Ratio):** Besaran kerugian per *SL Hit* (-$11 s.d. -$14) terlampau besar dibandingkan rata-rata profit hasil *Auto-Cut* atau TP. Perketat jarak SL atau naikkan ambang batas *min_probabilitas* (dari 63% menjadi minimal 70%) untuk menyaring sinyal palsu ber-skor tinggi.
-3. **Optimasi Algoritma Cut Profit & Jeda:** Pertahankan mode `CAUTIOUS` dengan mempercepat aktivasi jeda 1 jam (`balance_drop_pause_pct`) jika terjadi *drawdown* beruntun pada rentang 5 entry terakhir, guna memutus rantai *streak rugi*.
+1.  **Perketat Filter Sinyal & Naikkan Probabilitas:** Tingkatkan `min_probabilitas` dari 63% menjadi >70% dan pastikan `wajib_kompak_m15` lebih ketat untuk menghindari jebakan sinyal palsu ber-skor tinggi pada XAUUSD.
+2.  **Perpendek Batas Waktu Hold Loss (Time-based SL):** Batasi maksimal durasi posisi rugi (misal: auto-cut jika posisi minus dalam waktu >5 menit) guna memangkas durasi tahan SL rata-rata 9.38 menit yang terbukti menggerus modal.
+3.  **Optimalisasi Rasio Risk-to-Reward:** Sesuaikan aturan *cut profit* agar tidak terlalu kecil di bawah nilai rata-rata kekalahan *SL* (perbaiki rasio *Win/Loss payout* agar $1 kemenangan tidak kalah besar dibanding $1 kekalahan).
