@@ -1,5 +1,5 @@
 # Laporan Evaluasi Riset Scalping Otomatis
-- **Diperbarui:** 2026-11-28 04:44:45 WIB
+- **Diperbarui:** 2026-11-28 10:38:58 WIB
 - **Koneksi Gemini API:** `TERSAMBUNG` — Berhasil terhubung ke Gemini API (models/gemini-flash-lite-latest) | models=[models/gemini-2.5-flash, models/gemini-2.5-pro, models/gemini-2.5-flash-preview-tts, models/gemini-2.5-pro-preview-tts, models/gemma-4-26b-a4b-it, models/gemma-4-31b-it].
 - **Total Entry:** 123 | **Win Rate:** 62.6% | **Net P/L:** $-74.42 | **Puncak Profit:** $5.48 (Erosi: 1458.03%)
 
@@ -42,23 +42,23 @@
 - **Entry #121 - #123:** RUGI ($-24.44) | 1W / 2L | Rata-rata durasi: 24.14 menit
 
 ## Analisis Evaluasi AI
-Berikut adalah analisis evaluasi riset scalping otomatis berdasarkan data yang diberikan:
+Berikut adalah analisis evaluasi riset scalping otomatis (XAUUSD & EURUSD, lot 0.01):
 
 ### 1. Evaluasi Profit vs Rugi
-* **Performa Keseluruhan:** Meskipun tingkat kemenangan (*Win Rate*) cukup baik di angka **62.6%** (77 Win vs 46 Loss), net profit keseluruhan masih bernilai negatif **-$74.42**. Hal ini menunjukkan asimetri risiko di mana ukuran kerugian (*Rugi Besar* sebanyak 38 trade) jauh menggerus akumulasi kemenangan kecil.
-* **Puncak Profit & Erosi:** *Peak profit* tercatat sebesar **$5.48**, namun mengalami erosi yang sangat ekstrem sebesar **1,458.03%** (-$79.9), memicu aktifnya *rem tangan 30%*.
-* **Auto-Cut vs SL:** Mekanisme *auto-cut* berhasil mengamankan profit melalui skema seperti `PROFIT_CUT_10_15_PCT`, namun sistem gagal membatasi kerugian secara dini sebelum menyentuh Stop Loss (`SL_HIT`), menghasilkan kerugian per trade yang relatif besar (mencapai -$14.54).
+* **Profit & Win Rate:** Total trade sebanyak 123 dengan win rate cukup baik di angka **62.6%** (77 win, 46 loss). Namun, secara akumulatif menghasilkan net profit negatif **-$74.42** akibat dominasi kategori `RUGI_BESAR` (38 trade) yang menggerus hasil dari kategori `UNTUNG_BESAR` (28 trade).
+* **Puncak & Erosi Profit:** *Peak profit* tercatat di angka **$5.48**, dengan tingkat erosi yang sangat ekstrem mencapai **1,458.03%** (-$79.9), memicu aktifnya fitur pengaman *rem tangan 30%*.
+* **Auto-Cut vs SL:** Mekanisme *auto-cut* (seperti `PROFIT_CUT_10_15_PCT`) efektif mengamankan profit kecil-menengah secara instan, namun ketika posisi berbalik arah, ukuran *Stop Loss (SL)* terlalu lebar atau terlambat dipangkas, sehingga menghasilkan nominal rugi per trade yang jauh lebih besar daripada rata-rata profit yang dikumpulkan.
 
 ### 2. Evaluasi Durasi Tahan (Holding Time)
-* **Ke TP:** Rata-rata durasi mencapai TP adalah **13.19 menit**, menunjukkan posisi yang menang membutuhkan waktu lebih lama untuk matang.
-* **Ke SL:** Rata-rata durasi ke SL adalah **9.38 menit**, yang mengindikasikan bahwa posisi yang salah cenderung bertahan terlalu lama di pasar alih-alih terpotong lebih awal (terkonfirmasi pada memori kesalahan: 10 kasus rugi tahan lama $\ge$ 10 menit).
-* **Auto-Cut Tanpa TP/SL:** Rata-rata durasi sangat cepat yaitu **2.9 menit**, efektif mengamankan posisi saat kondisi tidak stabil terdeteksi.
+* **Ke TP:** Rata-rata durasi **13.19 menit**, menunjukkan target profit wajar untuk timeframe M5+M15.
+* **Ke SL:** Rata-rata durasi **9.38 menit**. Durasi ini mengindikasikan bahwa posisi yang terkena SL cenderung bertahan terlalu lama di zona merah sebelum akhirnya tersenggol batas risiko maksimal.
+* **Auto-Cut (Tanpa TP/SL):** Rata-rata durasi sangat cepat yaitu **2.9 menit**, membuktikan bahwa sistem bereaksi sangat baik dalam memotong posisi tidak stabil di awal durasi.
 
 ### 3. Evaluasi Blok 10 Entry & Pola Kesalahan (`error_memory`)
-* **Performa Per Blok:** Performa sangat fluktuatif. Blok awal hingga tengah (seperti #31-#50 dan #101-#110) sangat impresif dengan profit bersih yang baik dan win rate tinggi. Namun, tren memburuk drastis pada blok-blok akhir (khususnya #61-#70 dan #121-#123) akibat lonjakan *SL_HIT*.
-* **Pola Kesalahan:** Berdasarkan `error_memory`, masalah utama terkonsentrasi pada **`rugi_skor_tinggi_ge_75` (37 kejadian)**. Artinya, sinyal dengan skor probabilitas tinggi (>75) kerap memberikan hasil *falsely confident* yang berujung pada kerugian besar, ditambah masalah durasi tahan posisi rugi yang lewat dari batas ideal.
+* **Performa Blok:** Performa sangat fluktuatif. Blok awal hingga tengah sempat mencetak hasil positif (misal: Entry #101-#110 profit $35.42), namun performa merosot tajam di blok-blok akhir, terutama pada 3 entry terakhir (#121-#123) yang mencatat rugi -$24.44 dengan durasi bengkak hingga 35 menit.
+* **Pola Kesalahan:** Berdasarkan *error_memory*, masalah utama terkonsentrasi pada `rugi_skor_tinggi_ge_75` (tercatat 37 kali). Hal ini mengindikasikan bahwa skor indikator teknikal (M5+M15) yang tinggi (>75) masih sering terjebak *fakeout* atau pembalikan tren mendadak pada instrumen volatil seperti XAUUSD.
 
 ### 4. Saran Penyetelan Parameter Konkret
-1. **Perketat Sinyal Skor Tinggi & Filter Tren:** Evaluasi ulang formula skor M5 dan M15 karena skor $\ge 75$ masih menghasilkan banyak *false signal*. Wajibkan konfirmasi arah tren yang lebih ketat sebelum eksekusi untuk menekan 37 kasus rugi skor tinggi.
-2. **Percepat Cut Loss / Time-Based Stop:** Batasi maksimal durasi tahan posisi rugi (misalnya maksimal 5 menit). Jika posisi belum bergerak sesuai arah dalam waktu tersebut, paksakan *auto-cut* untuk menghindari kerugian besar ($>$ -$10) seperti yang terjadi pada entry #122 dan #123.
-3. **Optimasi Jarak ATR & Rasio Risk/Reward:** Sesuaikan `jarak_tambah_atr` (saat ini 0.35) atau perketat *Trailing Stop* / *Hard SL* agar ukuran kekalahan (*Rugi Besar*) tidak lebih besar daripada rata-rata *Untung Besar* yang bisa diraih.
+1. **Perketat Jarak Stop Loss (SL):** Pangkas batas risiko maksimal per trade (turunkan parameter SL) untuk menghindari kerugian besar (`RUGI_BESAR`) yang saat ini merusak rasio *Risk-to-Reward*.
+2. **Optimalkan Filter Skor Tinggi (>75):** Tambahkan konfirmasi volume atau indikator momentum tambahan (seperti RSI/ADX) pada sinyal dengan skor $\ge 75$ untuk menekan angka kegagalan pada *entry* bernilai probabilitas tinggi.
+3. **Perpendek Batas Waktu Tahan (Max Holding Time):** Batasi durasi maksimal posisi terbuka (misal *hard cut* di bawah 10 menit jika tidak bergerak ke arah TP) guna mencegah fenomena posisi minus yang dibiarkan terlalu lama (seperti kasus durasi 35 menit pada entry akhir).
